@@ -15,7 +15,7 @@
   \***********************/
 /***/ (() => {
 
-eval("\n\n//# sourceURL=webpack://battleship/./src/script.js?");
+eval("// TODO\r\n\r\n// Doing\r\n\r\n// Done\r\n\r\n// Not Sure/ Review\r\n\r\n// Components\r\n\r\n// Ship function - Ship objects with length, hit() & isSunk()\r\n\r\n// Gameboard - Place ships at co-ordinates, receiveAttack(coords) chekcs if ships is hit, report whether all sank\r\n\r\n// Player - Switch turns, bot with random legal moves\r\n\r\n// Game - UI, Create players & boards - predetermined corrds, gameOver(), userInput\r\n\n\n//# sourceURL=webpack://battleship/./src/script.js?");
 
 /***/ })
 
