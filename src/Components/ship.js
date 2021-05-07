@@ -1,5 +1,3 @@
-
-
 class Ship {
   constructor(length, sunk = false) {
     this.length = length;
