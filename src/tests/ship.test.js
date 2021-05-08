@@ -1,4 +1,4 @@
-const { Ship } = require('../Components/ship.js')
+import Ship from "../Components/ship";
 
 test("Ship Hit", () => {
   const newShip = new Ship(3);

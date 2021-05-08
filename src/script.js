@@ -1,8 +1,8 @@
-// TODO - Player tests, Game tests
+// TODO - Game tests
 
-// Doing - Gameboard tests
+// Doing -
 
-// Done - Ship tests
+// Done - Ship tests, Gameboard tests, Player tests
 
 // Not Sure/ Review
 

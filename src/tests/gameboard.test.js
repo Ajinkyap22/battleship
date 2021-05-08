@@ -1,5 +1,5 @@
-const { Gameboard } = require("../Components/gameboard");
-const { Ship } = require("../Components/ship");
+import Gameboard from "../Components/gameboard";
+import Ship from "../Components/ship";
 
 test("is gameboard initializing", () => {
   const board = new Gameboard();
@@ -49,18 +49,23 @@ test("Ship receiving attack", () => {
   expect(ship.positions).toEqual([0, 1, 0]);
 });
 
-test("Ship receiving attack & sinking", () => {
-  const ship = new Ship(3);
+test("Determine whether all ships have been sunk", () => {
+  const shipOne = new Ship(1);
+  const shipTwo = new Ship(2);
   const board = new Gameboard();
 
   board.init(10);
 
-  board.placeShip(ship, 3);
-  board.receiveAttack(4);
-  board.receiveAttack(3);
-  board.receiveAttack(5);
+  board.placeShip(shipOne, 3);
+  board.placeShip(shipTwo, 8);
 
-  expect(ship.isSunk()).toBeTruthy();
+  expect(board.allSunk).toBeFalsy();
+
+  board.receiveAttack(3);
+  board.receiveAttack(8);
+  board.receiveAttack(9);
+
+  expect(board.allSunk).toBeTruthy();
 });
 
 test("Attacking on already hit coord", () => {
@@ -69,5 +74,5 @@ test("Attacking on already hit coord", () => {
 
   board.init(10);
   board.receiveAttack(4);
-  expect(board.receiveAttack(4)).toThrow("Already hit");
+  expect(() => board.receiveAttack(4)).toThrow("Already hit");
 });
