@@ -7,6 +7,7 @@ test("is gameboard initializing", () => {
   board.init(5);
 
   expect(board.board.length).toBe(5);
+  expect(board.size).toBe(5);
   expect(
     board.board.every((cell) => !cell.hasShip && !cell.isHit)
   ).toBeTruthy();

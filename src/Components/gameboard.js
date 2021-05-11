@@ -2,6 +2,7 @@ class Gameboard {
   constructor() {
     this.board = [];
     this.ships = [];
+    this.size = 0;
     this.allSunk = false;
   }
 
@@ -9,6 +10,7 @@ class Gameboard {
     for (let i = 0; i < size; i++) {
       this.board.push({ hasShip: false, isHit: false });
     }
+    this.size = size;
   }
 
   markAsShip(pos) {
