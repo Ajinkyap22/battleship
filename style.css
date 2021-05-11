@@ -1,0 +1,47 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  max-width: 100%;
+  position: relative;
+}
+
+html,
+body,
+.container {
+  height: 100%;
+  position: relative;
+  text-align: center;
+}
+
+header {
+  padding: 10px;
+}
+
+.boards {
+  padding: 10px;
+  height: 75%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.grid {
+  height: 100%;
+}
+
+.gameboard {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  gap: 1px;
+  width: 500px;
+  height: 100%;
+  padding: 10px;
+}
+
+.cell {
+  border: 1px solid black;
+}
