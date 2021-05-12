@@ -50,6 +50,13 @@ class Game {
     }
   }
 
+  // place ships method that creates 10 ships & places them
+  displayShips(board) {
+    // create ships
+    board.createShips();
+    // place them
+  }
+
   // method to take user input
 
   // method to end game

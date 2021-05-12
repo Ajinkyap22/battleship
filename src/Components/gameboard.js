@@ -1,3 +1,5 @@
+import Ship from "../Components/ship";
+
 class Gameboard {
   constructor() {
     this.board = [];
@@ -24,6 +26,26 @@ class Gameboard {
     ship.ship.isSunk();
   }
 
+  createShips() {
+    let count = 0;
+    for (let i = 0; i < 10; i++) {
+      if (count < 4) {
+        const ship = new Ship(1);
+        this.ships.push(ship);
+      } else if (count >= 4 && count < 7) {
+        const ship = new Ship(2);
+        this.ships.push(ship);
+      } else if (count >= 7 && count < 9) {
+        const ship = new Ship(3);
+        this.ships.push(ship);
+      } else {
+        const ship = new Ship(4);
+        this.ships.push(ship);
+      }
+      count++;
+    }
+  }
+
   placeShip(ship, coords) {
     const cells = [];
 
@@ -41,6 +63,11 @@ class Gameboard {
     }
 
     this.ships.push({ ship, cells });
+  }
+
+  placeShipsRandomly() {
+    // for loop over ships
+    //
   }
 
   receiveAttack(coords) {

@@ -13,6 +13,17 @@ test("is gameboard initializing", () => {
   ).toBeTruthy();
 });
 
+test("Creating 10 ships of proper sizes", () => {
+  const board = new Gameboard();
+
+  board.init(20);
+
+  board.createShips();
+
+  expect(board.ships.length).toBe(10);
+  expect(board.ships.reduce((acc, ship) => acc + ship.length, 0)).toBe(20);
+});
+
 test("Placing ship correctly", () => {
   const ship = new Ship(3);
   const board = new Gameboard();
@@ -24,6 +35,15 @@ test("Placing ship correctly", () => {
   expect(board.board[3].hasShip).toBeTruthy();
   expect(board.board[4].hasShip).toBeTruthy();
   expect(board.board[5].hasShip).toBeTruthy();
+});
+
+test("Placing ships at random coords", () => {
+  const board = new Gameboard();
+  board.init(20);
+  board.createShips();
+  board.placeShipsRandomly();
+
+  expect(board.board.every((cell) => cell.hasShip));
 });
 
 test("Gameboard throwing error for invalid coords", () => {
