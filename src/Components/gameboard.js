@@ -66,8 +66,24 @@ class Gameboard {
   }
 
   placeShipsRandomly() {
-    // for loop over ships
-    //
+    for (const ship of this.ships) {
+      const coords = this.generateRandomCoords(ship);
+      this.placeShip(ship, coords);
+    }
+  }
+
+  generateRandomCoords(ship) {
+    let coords = Math.floor(Math.random() * this.size);
+    const coordsArr = []; // gets empty again during recursion
+
+    for (let i = coords; i < coords + ship.length; i++) {
+      if (this.board[coords].hasShip || coordsArr.includes(coords)) {
+        return this.generateRandomCoords(ship);
+      }
+      coordsArr.push(coords);
+    }
+
+    return coords;
   }
 
   receiveAttack(coords) {
