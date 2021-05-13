@@ -39,20 +39,34 @@ test("Placing ship correctly", () => {
 
 test("Placing ships at random coords", () => {
   const board = new Gameboard();
-  board.init(20);
+  board.init(100);
   board.createShips();
   board.placeShipsRandomly();
 
-  expect(board.board.every((cell) => cell.hasShip));
+  expect(board.allPlaced).toBeTruthy();
 });
 
-test("Gameboard throwing error for invalid coords", () => {
+test("Gameboard throwing error for invalid coords v1", () => {
   const ship = new Ship(3);
   const board = new Gameboard();
 
   board.init(5);
 
   expect(() => board.placeShip(ship, 3)).toThrow("Cannot place the ship here");
+});
+
+test("Gameboard throwing error for invalid coords v2", () => {
+  const board = new Gameboard();
+
+  const ship = new Ship(3);
+  const newShip = new Ship(2);
+
+  board.init(5);
+  board.placeShip(ship, 2);
+
+  expect(() => board.placeShip(newShip, 1)).toThrow(
+    "Cannot place the ship here"
+  );
 });
 
 test("Ship receiving attack", () => {

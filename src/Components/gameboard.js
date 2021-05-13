@@ -6,6 +6,7 @@ class Gameboard {
     this.ships = [];
     this.size = 0;
     this.allSunk = false;
+    this.allPlaced = false;
   }
 
   init(size) {
@@ -27,35 +28,37 @@ class Gameboard {
   }
 
   createShips() {
-    let count = 0;
-    for (let i = 0; i < 10; i++) {
-      if (count < 4) {
-        const ship = new Ship(1);
-        this.ships.push(ship);
-      } else if (count >= 4 && count < 7) {
-        const ship = new Ship(2);
-        this.ships.push(ship);
-      } else if (count >= 7 && count < 9) {
-        const ship = new Ship(3);
-        this.ships.push(ship);
-      } else {
-        const ship = new Ship(4);
-        this.ships.push(ship);
-      }
-      count++;
+    const sizes = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4];
+
+    for (const size of sizes) {
+      const ship = new Ship(size);
+      this.ships.push(ship);
     }
   }
 
-  placeShip(ship, coords) {
-    const cells = [];
-
+  validateCoords(ship, coords) {
     if (
       coords + ship.length > this.board.length ||
       coords > this.board.length ||
       ship.length > this.board.length
     ) {
-      throw new Error("Cannot place the ship here");
+      return false;
     }
+
+    for (let i = coords; i < coords + ship.length; i++) {
+      if (this.board[i].hasShip) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  placeShip(ship, coords) {
+    const cells = [];
+
+    if (!this.validateCoords(ship, coords))
+      throw new Error("Cannot place the ship here");
 
     for (let i = coords; i < coords + ship.length; i++) {
       this.markAsShip(i);
@@ -67,23 +70,17 @@ class Gameboard {
 
   placeShipsRandomly() {
     for (const ship of this.ships) {
-      const coords = this.generateRandomCoords(ship);
+      let coords = this.generateRandomCoords();
+      while (!this.validateCoords(ship, coords)) {
+        coords = this.generateRandomCoords();
+      }
       this.placeShip(ship, coords);
     }
+    this.allPlaced = true;
   }
 
-  generateRandomCoords(ship) {
-    let coords = Math.floor(Math.random() * this.size);
-    const coordsArr = []; // gets empty again during recursion
-
-    for (let i = coords; i < coords + ship.length; i++) {
-      if (this.board[coords].hasShip || coordsArr.includes(coords)) {
-        return this.generateRandomCoords(ship);
-      }
-      coordsArr.push(coords);
-    }
-
-    return coords;
+  generateRandomCoords() {
+    return Math.floor(Math.random() * this.size);
   }
 
   receiveAttack(coords) {
