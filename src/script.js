@@ -32,6 +32,8 @@ class Game {
     this.displayBoard(botBoard, "right");
 
     // create ships for each board & place them
+    this.displayShips(playerBoard, "left");
+    this.displayShips(botBoard, "right");
 
     // allow players to take turns
   }
@@ -51,12 +53,23 @@ class Game {
   }
 
   // place ships method that creates 10 ships & places them
-  displayShips(board) {
+  displayShips(board, className) {
     // create ships
     board.createShips();
     // place them
+    board.placeShipsRandomly();
+    // add ship class to all ships
+    this.renderShips(board, className);
   }
 
+  renderShips(board, className) {
+    const grid = document.querySelector(`.${className}`);
+    const cells = grid.querySelectorAll(".cell");
+
+    for (let i = 0; i < board.size; i++) {
+      if (board.board[i].hasShip) cells[i].classList.add("ship");
+    }
+  }
   // method to take user input
 
   // method to end game

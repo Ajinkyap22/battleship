@@ -4,18 +4,19 @@ class Gameboard {
   constructor() {
     this.board = [];
     this.ships = [];
-    this.size = 0;
+    this.size = 100;
     this.allSunk = false;
     this.allPlaced = false;
   }
 
-  init(size) {
-    for (let i = 0; i < size; i++) {
-      this.board.push({ hasShip: false, isHit: false });
+  // board initialization
+  init() {
+    for (let i = 0; i < this.size; i++) {
+      this.board.push({ hasShip: false, isHit: false, isValid: true });
     }
-    this.size = size;
   }
 
+  // helpers
   markAsShip(pos) {
     this.board[pos].hasShip = true;
   }
@@ -27,6 +28,38 @@ class Gameboard {
     ship.ship.isSunk();
   }
 
+  // error handling
+  validateCoords(ship, coords, axis) {
+    if (coords > this.board.length || ship.length > this.board.length) {
+      return false;
+    }
+
+    if (axis == "x") {
+      if (coords + ship.length > this.board.length) {
+        return false;
+      }
+
+      for (let i = 0; i < ship.length; i++) {
+        if (this.board[coords + i].hasShip) {
+          return false;
+        }
+      }
+    } else {
+      if (coords + ship.length * 10 > this.board.length) {
+        return false;
+      }
+
+      for (let i = 0; i < ship.length; i++) {
+        if (this.board[coords + i * 10].hasShip) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  // ship methods
   createShips() {
     const sizes = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4];
 
@@ -36,51 +69,65 @@ class Gameboard {
     }
   }
 
-  validateCoords(ship, coords) {
-    if (
-      coords + ship.length > this.board.length ||
-      coords > this.board.length ||
-      ship.length > this.board.length
-    ) {
-      return false;
-    }
-
-    for (let i = coords; i < coords + ship.length; i++) {
-      if (this.board[i].hasShip) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  placeShip(ship, coords) {
+  placeShip(ship, coords, axis = "x") {
     const cells = [];
 
-    if (!this.validateCoords(ship, coords))
+    if (!this.validateCoords(ship, coords, axis))
       throw new Error("Cannot place the ship here");
 
-    for (let i = coords; i < coords + ship.length; i++) {
-      this.markAsShip(i);
-      cells.push(i);
+    for (let i = 0; i < ship.length; i++) {
+      if (axis == "x") {
+        cells.push(coords + i);
+        this.markAsShip(coords + i);
+        // mark coords - 1, coords + ship.length + 1, i + 10, i - 10 as invalid
+      } else {
+        cells.push(coords + i * 10);
+        this.markAsShip(coords + i * 10);
+        // mark coords - 10, coords + ship.length + 1 * 10, i + 1, i - 1 has invalid
+      }
     }
 
     this.ships.push({ ship, cells });
   }
 
-  placeShipsRandomly() {
-    for (const ship of this.ships) {
-      let coords = this.generateRandomCoords();
-      while (!this.validateCoords(ship, coords)) {
-        coords = this.generateRandomCoords();
-      }
-      this.placeShip(ship, coords);
+  markAsInvalid(ship, coords, axis) {
+    if (axis == "x") {
+      // this.board[coords - 1].isValid = false;
+      // this.board[coords + ship.length + 1].isValid = false;
+      // for (let i = 0; i < ship.length; i++) {
+      //   this.board[i + 10].isValid = false;
+      //   this.board[i - 10].isValid = false;
+      // }
+    } else {
+      //   this.board[coords + (ship.length + 1) * 10].isValid = false;
+      //   this.board[coords - 10].isValid = false;
+      //   for (let i = 0; i < ship.length; i++) {
+      //     this.board[i + 1].isValid = false;
+      //     this.board[i - 1].isValid = false;
+      //   }
     }
+  }
+
+  autoPlace(ship) {
+    let [coords, axis] = this.generateRandomCoords();
+
+    while (!this.validateCoords(ship, coords, axis)) {
+      [coords, axis] = this.generateRandomCoords();
+    }
+
+    this.placeShip(ship, coords, axis);
+  }
+
+  placeShipsRandomly() {
+    this.ships.forEach((ship) => this.autoPlace(ship));
+
     this.allPlaced = true;
   }
 
   generateRandomCoords() {
-    return Math.floor(Math.random() * this.size);
+    const coords = Math.floor(Math.random() * this.size);
+    const axis = Math.floor(Math.random() * 2) ? "x" : "y";
+    return [coords, axis];
   }
 
   receiveAttack(coords) {

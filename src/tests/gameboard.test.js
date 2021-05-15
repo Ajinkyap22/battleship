@@ -4,10 +4,10 @@ import Ship from "../Components/ship";
 test("is gameboard initializing", () => {
   const board = new Gameboard();
 
-  board.init(5);
+  board.init();
 
-  expect(board.board.length).toBe(5);
-  expect(board.size).toBe(5);
+  expect(board.board.length).toBe(100);
+  expect(board.size).toBe(100);
   expect(
     board.board.every((cell) => !cell.hasShip && !cell.isHit)
   ).toBeTruthy();
@@ -16,7 +16,7 @@ test("is gameboard initializing", () => {
 test("Creating 10 ships of proper sizes", () => {
   const board = new Gameboard();
 
-  board.init(20);
+  board.init();
 
   board.createShips();
 
@@ -24,11 +24,11 @@ test("Creating 10 ships of proper sizes", () => {
   expect(board.ships.reduce((acc, ship) => acc + ship.length, 0)).toBe(20);
 });
 
-test("Placing ship correctly", () => {
+test("Placing ship correctly horrizontally", () => {
   const ship = new Ship(3);
   const board = new Gameboard();
 
-  board.init(10);
+  board.init();
 
   board.placeShip(ship, 3);
 
@@ -37,10 +37,28 @@ test("Placing ship correctly", () => {
   expect(board.board[5].hasShip).toBeTruthy();
 });
 
+test("Placing ship correctly vertically", () => {
+  const ship = new Ship(3);
+  const board = new Gameboard();
+
+  board.init(10);
+
+  board.placeShip(ship, 3, "y");
+
+  expect(board.board[3].hasShip).toBeTruthy();
+  expect(board.board[13].hasShip).toBeTruthy();
+  expect(board.board[23].hasShip).toBeTruthy();
+});
+
 test("Placing ships at random coords", () => {
   const board = new Gameboard();
-  board.init(100);
-  board.createShips();
+
+  board.init();
+
+  for (let i = 1; i < 5; i++) {
+    board.ships.push(new Ship(i));
+  }
+
   board.placeShipsRandomly();
 
   expect(board.allPlaced).toBeTruthy();
@@ -50,9 +68,9 @@ test("Gameboard throwing error for invalid coords v1", () => {
   const ship = new Ship(3);
   const board = new Gameboard();
 
-  board.init(5);
+  board.init();
 
-  expect(() => board.placeShip(ship, 3)).toThrow("Cannot place the ship here");
+  expect(() => board.placeShip(ship, 98)).toThrow("Cannot place the ship here");
 });
 
 test("Gameboard throwing error for invalid coords v2", () => {
@@ -61,10 +79,35 @@ test("Gameboard throwing error for invalid coords v2", () => {
   const ship = new Ship(3);
   const newShip = new Ship(2);
 
-  board.init(5);
+  board.init();
   board.placeShip(ship, 2);
 
   expect(() => board.placeShip(newShip, 1)).toThrow(
+    "Cannot place the ship here"
+  );
+});
+
+test("Gameboard throwing error for invalid coords v3", () => {
+  const ship = new Ship(3);
+  const board = new Gameboard();
+
+  board.init();
+
+  expect(() => board.placeShip(ship, 88, "y")).toThrow(
+    "Cannot place the ship here"
+  );
+});
+
+test("Gameboard throwing error for invalid coords v4", () => {
+  const board = new Gameboard();
+
+  const ship = new Ship(3);
+  const newShip = new Ship(2);
+
+  board.init();
+  board.placeShip(ship, 12, "y");
+
+  expect(() => board.placeShip(newShip, 2, "y")).toThrow(
     "Cannot place the ship here"
   );
 });
@@ -73,7 +116,7 @@ test("Ship receiving attack", () => {
   const ship = new Ship(3);
   const board = new Gameboard();
 
-  board.init(10);
+  board.init();
 
   board.placeShip(ship, 3);
   board.receiveAttack(4);
@@ -89,7 +132,7 @@ test("Determine whether all ships have been sunk", () => {
   const shipTwo = new Ship(2);
   const board = new Gameboard();
 
-  board.init(10);
+  board.init();
 
   board.placeShip(shipOne, 3);
   board.placeShip(shipTwo, 8);
@@ -107,7 +150,7 @@ test("Attacking on already hit coord", () => {
   const ship = new Ship(3);
   const board = new Gameboard();
 
-  board.init(10);
+  board.init();
   board.receiveAttack(4);
   expect(() => board.receiveAttack(4)).toThrow("Already hit");
 });
