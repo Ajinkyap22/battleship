@@ -45,3 +45,8 @@ header {
 .cell {
   border: 1px solid black;
 }
+
+.ship {
+  border: 1px solid blue;
+  background-color: lightgray;
+}
