@@ -18,6 +18,7 @@ class Gameboard {
 
   // helpers
   markAsShip(pos) {
+    console.log(this.board, pos);
     this.board[pos].hasShip = true;
   }
 
@@ -26,6 +27,35 @@ class Gameboard {
     const index = ship.cells.indexOf(coords);
     ship.ship.hit(index);
     ship.ship.isSunk();
+  }
+
+  markAsInvalid(ship, coords, axis) {
+    if (axis === "x") {
+      if (this.board[coords - 1]) this.board[coords - 1] = false;
+
+      if (this.board[coords + ship.length])
+        this.board[coords + ship.length].isValid = false;
+
+      for (let i = coords; i < coords + ship.length; i++) {
+        if (this.board[i + 10]) this.board[i + 10].isValid = false;
+
+        if (this.board[i - 10]) this.board[i - 10].isValid = false;
+      }
+    } else {
+      // cell below ship
+      if (this.board[coords + ship.length * 10])
+        this.board[coords + ship.length * 10].isValid = false;
+
+      // cell above ship
+      if (this.board[coords - 10]) this.board[coords - 10].isValid = false;
+
+      for (let i = coords; i < coords + ship.length * 10; i += 10) {
+        // cells on right of ship
+        if (this.board[i + 1]) this.board[i + 1].isValid = false;
+        // cells on left of ship
+        if (this.board[i - 1]) this.board[i - 1].isValid = false;
+      }
+    }
   }
 
   // error handling
@@ -79,33 +109,14 @@ class Gameboard {
       if (axis == "x") {
         cells.push(coords + i);
         this.markAsShip(coords + i);
-        // mark coords - 1, coords + ship.length + 1, i + 10, i - 10 as invalid
+        this.markAsInvalid(ship, coords, axis);
       } else {
         cells.push(coords + i * 10);
         this.markAsShip(coords + i * 10);
-        // mark coords - 10, coords + ship.length + 1 * 10, i + 1, i - 1 has invalid
+        this.markAsInvalid(ship, coords, axis);
       }
     }
-
-    this.ships.push({ ship, cells });
-  }
-
-  markAsInvalid(ship, coords, axis) {
-    if (axis == "x") {
-      // this.board[coords - 1].isValid = false;
-      // this.board[coords + ship.length + 1].isValid = false;
-      // for (let i = 0; i < ship.length; i++) {
-      //   this.board[i + 10].isValid = false;
-      //   this.board[i - 10].isValid = false;
-      // }
-    } else {
-      //   this.board[coords + (ship.length + 1) * 10].isValid = false;
-      //   this.board[coords - 10].isValid = false;
-      //   for (let i = 0; i < ship.length; i++) {
-      //     this.board[i + 1].isValid = false;
-      //     this.board[i - 1].isValid = false;
-      //   }
-    }
+    if (this.ships.length < 10) this.ships.push({ ship, cells });
   }
 
   autoPlace(ship) {

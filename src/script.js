@@ -20,9 +20,9 @@ class Game {
   init() {
     // create 10 x 10 board
     const playerBoard = new Gameboard();
-    playerBoard.init(100);
+    playerBoard.init();
     const botBoard = new Gameboard();
-    botBoard.init(100);
+    botBoard.init();
 
     // create 2 players - human & bot
     const player = new Player("Human", playerBoard);

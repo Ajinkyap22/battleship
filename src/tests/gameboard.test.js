@@ -41,13 +41,45 @@ test("Placing ship correctly vertically", () => {
   const ship = new Ship(3);
   const board = new Gameboard();
 
-  board.init(10);
+  board.init();
 
   board.placeShip(ship, 3, "y");
 
   expect(board.board[3].hasShip).toBeTruthy();
   expect(board.board[13].hasShip).toBeTruthy();
   expect(board.board[23].hasShip).toBeTruthy();
+});
+
+test("adjacent coords becoming invalid after placing the ship vertically", () => {
+  const ship = new Ship(2);
+  const board = new Gameboard();
+
+  board.init();
+
+  board.placeShip(ship, 13, "y");
+
+  expect(board.board[3].isValid).toBeFalsy();
+  expect(board.board[33].isValid).toBeFalsy();
+  expect(board.board[12].isValid).toBeFalsy();
+  expect(board.board[14].isValid).toBeFalsy();
+  expect(board.board[22].isValid).toBeFalsy();
+  expect(board.board[24].isValid).toBeFalsy();
+});
+
+test("adjacent coords becoming invalid after placing the ship horrizontally", () => {
+  const ship = new Ship(2);
+  const board = new Gameboard();
+
+  board.init();
+
+  board.placeShip(ship, 13, "x");
+
+  expect(board.board[12].isValid).toBeFalsy();
+  expect(board.board[15].isValid).toBeFalsy();
+  expect(board.board[3].isValid).toBeFalsy();
+  expect(board.board[4].isValid).toBeFalsy();
+  expect(board.board[23].isValid).toBeFalsy();
+  expect(board.board[24].isValid).toBeFalsy();
 });
 
 test("Placing ships at random coords", () => {

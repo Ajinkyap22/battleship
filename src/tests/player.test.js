@@ -15,7 +15,7 @@ test("successful attack on opponents ship", () => {
   const board = new Gameboard();
   const playerBoard = new Gameboard();
 
-  board.init(10);
+  board.init();
 
   const ship = new Ship(3);
 
