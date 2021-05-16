@@ -15,6 +15,8 @@ import Player from "./Components/player";
 class Game {
   constructor() {
     this.init();
+
+    this.turn = 1;
   }
 
   init() {
@@ -35,7 +37,16 @@ class Game {
     this.displayShips(playerBoard, "left");
     this.displayShips(botBoard, "right");
 
-    // allow players to take turns
+    // add event listeners
+    const leftBoard = document.querySelector(".left");
+    leftBoard
+      .querySelectorAll(".cell")
+      .forEach((cell) =>
+        cell.addEventListener(
+          "click",
+          this.playerAttack.bind(this, botBoard, player)
+        )
+      );
   }
 
   // method to create board on ui
@@ -70,7 +81,22 @@ class Game {
       if (board.board[i].hasShip) cells[i].classList.add("ship");
     }
   }
+
+  switchTurn(current) {
+    document
+      .querySelectorAll(".gameboard")
+      .forEach((board) => board.classList.remove("inactive"));
+    if (current === 1) {
+      this.turn = 2;
+      document.querySelector(".left").classList.add("inactive");
+    } else {
+      this.turn = 1;
+      document.querySelector(".right").classList.add("inactive");
+    }
+  }
+
   // method to take user input
+  playerAttack(board, player, e) {}
 
   // method to end game
 }

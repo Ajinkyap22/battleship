@@ -18,7 +18,6 @@ class Gameboard {
 
   // helpers
   markAsShip(pos) {
-    console.log(this.board, pos);
     this.board[pos].hasShip = true;
   }
 
@@ -31,14 +30,32 @@ class Gameboard {
 
   markAsInvalid(ship, coords, axis) {
     if (axis === "x") {
+      // left of ship
       if (this.board[coords - 1]) this.board[coords - 1] = false;
 
+      // right of ship
       if (this.board[coords + ship.length])
         this.board[coords + ship.length].isValid = false;
 
+      // top left of ship
+      if (this.board[coords - 11]) this.board[coords - 11] = false;
+
+      // top right of ship
+      if (this.board[coords + (ship.length - 1) - 9])
+        this.board[coords + (ship.length - 1) - 9].isValid = false;
+
+      // bottom left of ship
+      if (this.board[coords + 9]) this.board[coords + 9] = false;
+
+      // bottom right of ship
+      if (this.board[coords + (ship.length - 1) + 11])
+        this.board[coords + (ship.length - 1) + 11].isValid = false;
+
       for (let i = coords; i < coords + ship.length; i++) {
+        // right coords
         if (this.board[i + 10]) this.board[i + 10].isValid = false;
 
+        // left coords
         if (this.board[i - 10]) this.board[i - 10].isValid = false;
       }
     } else {
@@ -48,6 +65,20 @@ class Gameboard {
 
       // cell above ship
       if (this.board[coords - 10]) this.board[coords - 10].isValid = false;
+
+      // top left
+      if (this.board[coords - 11]) this.board[coords - 11].isValid = false;
+
+      // top right
+      if (this.board[coords - 9]) this.board[coords - 9].isValid = false;
+
+      // bottom left
+      if (this.board[coords + ship.length * 10 - 1])
+        this.board[coords + ship.length * 10 - 1].isValid = false;
+
+      // bottom right
+      if (this.board[coords + ship.length * 10 + 1])
+        this.board[coords + ship.length * 10 + 1].isValid = false;
 
       for (let i = coords; i < coords + ship.length * 10; i += 10) {
         // cells on right of ship
@@ -70,7 +101,7 @@ class Gameboard {
       }
 
       for (let i = 0; i < ship.length; i++) {
-        if (this.board[coords + i].hasShip) {
+        if (this.board[coords + i].hasShip || !this.board[coords + i].isValid) {
           return false;
         }
       }
@@ -80,7 +111,10 @@ class Gameboard {
       }
 
       for (let i = 0; i < ship.length; i++) {
-        if (this.board[coords + i * 10].hasShip) {
+        if (
+          this.board[coords + i * 10].hasShip ||
+          !this.board[coords + i * 10].isValid
+        ) {
           return false;
         }
       }

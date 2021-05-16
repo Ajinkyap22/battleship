@@ -50,3 +50,7 @@ header {
   border: 1px solid blue;
   background-color: lightgray;
 }
+
+.inactive {
+  opacity: 0.3;
+}
