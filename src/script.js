@@ -38,8 +38,8 @@ class Game {
     this.displayShips(botBoard, "right");
 
     // add event listeners
-    const leftBoard = document.querySelector(".left");
-    leftBoard
+    const rightBoard = document.querySelector(".right");
+    rightBoard
       .querySelectorAll(".cell")
       .forEach((cell) =>
         cell.addEventListener(
@@ -57,6 +57,7 @@ class Game {
 
       // set class for it
       cell.setAttribute("class", "cell");
+      cell.setAttribute("data-index", i);
 
       // append it to the parent
       document.querySelector(`.${name}`).append(cell);
@@ -88,15 +89,19 @@ class Game {
       .forEach((board) => board.classList.remove("inactive"));
     if (current === 1) {
       this.turn = 2;
-      document.querySelector(".left").classList.add("inactive");
+      document.querySelector(".right").classList.add("inactive");
     } else {
       this.turn = 1;
-      document.querySelector(".right").classList.add("inactive");
+      document.querySelector(".left").classList.add("inactive");
     }
   }
 
   // method to take user input
-  playerAttack(board, player, e) {}
+  playerAttack(board, player, e) {
+    const coords = +e.target.dataset.index;
+    player.attack(board, coords);
+    console.log(board.board[coords].isHit);
+  }
 
   // method to end game
 }

@@ -28,7 +28,7 @@ test("Placing ship correctly horrizontally", () => {
   const ship = new Ship(3);
   const board = new Gameboard();
 
-  board.init();
+  board.init(10);
 
   board.placeShip(ship, 3);
 
@@ -41,7 +41,7 @@ test("Placing ship correctly vertically", () => {
   const ship = new Ship(3);
   const board = new Gameboard();
 
-  board.init();
+  board.init(30);
 
   board.placeShip(ship, 3, "y");
 
@@ -54,7 +54,7 @@ test("adjacent coords becoming invalid after placing the ship vertically", () =>
   const ship = new Ship(2);
   const board = new Gameboard();
 
-  board.init();
+  board.init(30);
 
   board.placeShip(ship, 13, "y");
 
@@ -74,7 +74,7 @@ test("adjacent coords becoming invalid after placing the ship horrizontally", ()
   const ship = new Ship(2);
   const board = new Gameboard();
 
-  board.init();
+  board.init(30);
 
   board.placeShip(ship, 13, "x");
 
@@ -156,7 +156,7 @@ test("Ship receiving attack", () => {
   const ship = new Ship(3);
   const board = new Gameboard();
 
-  board.init();
+  board.init(10);
 
   board.placeShip(ship, 3);
   board.receiveAttack(4);
@@ -172,7 +172,7 @@ test("Determine whether all ships have been sunk", () => {
   const shipTwo = new Ship(2);
   const board = new Gameboard();
 
-  board.init();
+  board.init(10);
 
   board.placeShip(shipOne, 3);
   board.placeShip(shipTwo, 8);
@@ -187,10 +187,9 @@ test("Determine whether all ships have been sunk", () => {
 });
 
 test("Attacking on already hit coord", () => {
-  const ship = new Ship(3);
   const board = new Gameboard();
 
-  board.init();
+  board.init(10);
   board.receiveAttack(4);
   expect(() => board.receiveAttack(4)).toThrow("Already hit");
 });

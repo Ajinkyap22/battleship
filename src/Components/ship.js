@@ -2,7 +2,7 @@ class Ship {
   constructor(length, sunk = false) {
     this.length = length;
     this.sunk = sunk;
-
+    this.cells = [];
     this.positions = Array(this.length).fill(0);
   }
 
