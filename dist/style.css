@@ -51,6 +51,24 @@ header {
   background-color: lightgray;
 }
 
+.hidden {
+  border: 1px solid black;
+  background-color: white;
+}
+
 .inactive {
   opacity: 0.3;
+}
+
+.hit {
+  border: 2px solid red;
+  background-color: rgb(255, 200, 179);
+}
+
+.miss {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.4rem;
+  background-color: lightgray;
 }

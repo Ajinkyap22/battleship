@@ -136,7 +136,6 @@ class Gameboard {
     const index = ship.cells.indexOf(coords);
     ship.hit(index);
     ship.isSunk();
-    console.log(ship, ship.positions);
   }
 
   markAsInvalid(ship, coords, axis) {

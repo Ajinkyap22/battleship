@@ -36,6 +36,7 @@ class Game {
     // create ships for each board & place them
     this.displayShips(playerBoard, "left");
     this.displayShips(botBoard, "right");
+    this.hideBotShips(botBoard, "right");
 
     // add event listeners
     const rightBoard = document.querySelector(".right");
@@ -79,7 +80,20 @@ class Game {
     const cells = grid.querySelectorAll(".cell");
 
     for (let i = 0; i < board.size; i++) {
-      if (board.board[i].hasShip) cells[i].classList.add("ship");
+      if (board.board[i].hasShip) {
+        cells[i].classList.add("ship");
+      }
+    }
+  }
+
+  hideBotShips(board, className) {
+    const grid = document.querySelector(`.${className}`);
+    const cells = grid.querySelectorAll(".cell");
+
+    for (let i = 0; i < board.size; i++) {
+      if (board.board[i].hasShip) {
+        cells[i].classList.add("hidden");
+      }
     }
   }
 
@@ -90,6 +104,7 @@ class Game {
     if (current === 1) {
       this.turn = 2;
       document.querySelector(".right").classList.add("inactive");
+      // this.botAttack();
     } else {
       this.turn = 1;
       document.querySelector(".left").classList.add("inactive");
@@ -98,9 +113,38 @@ class Game {
 
   // method to take user input
   playerAttack(board, player, e) {
-    const coords = +e.target.dataset.index;
+    if (this.turn !== 1) return;
+
+    const cell = e.target;
+    const coords = +cell.dataset.index;
+
     player.attack(board, coords);
-    console.log(board.board[coords].isHit);
+
+    this.markCell(cell, this.turn);
+  }
+
+  botAttack(board, player, className) {
+    const coords = player.generateBotMove();
+    player.attack(board, coords);
+
+    const leftBoard = document.querySelector(`.${left}`);
+    const cell = leftBoard.querySelector(`[data-index="${coords}"]`);
+
+    player.attack(board, coords);
+
+    this.markCell(cell, this.turn);
+  }
+
+  markCell(cell, turn) {
+    if (cell.classList.contains("ship")) {
+      cell.classList.add("hit");
+    } else {
+      cell.classList.add("miss");
+
+      cell.textContent = "⚫";
+
+      this.switchTurn(turn);
+    }
   }
 
   // method to end game
