@@ -72,9 +72,11 @@ class Gameboard {
 
   receiveAttack(coords) {
     // Error handling
-    if (this.board[coords].isHit) {
-      throw new Error("Already hit");
-    }
+    // if (this.board[coords].isHit) {
+    //   throw new Error("Already hit");
+    // }
+
+    if (this.board[coords].isHit) return;
 
     // Mark coord as hit
     this.board[coords].isHit = true;
@@ -132,10 +134,14 @@ class Gameboard {
   }
 
   markAsHit(coords) {
-    const ship = this.ships.find((ship) => ship.cells.includes(coords));
+    const ship = this.getShip(coords);
     const index = ship.cells.indexOf(coords);
     ship.hit(index);
     ship.isSunk();
+  }
+
+  getShip(coords) {
+    return this.ships.find((ship) => ship.cells.includes(coords));
   }
 
   markAsInvalid(ship, coords, axis) {

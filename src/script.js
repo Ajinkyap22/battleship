@@ -13,6 +13,11 @@ import Player from "./Components/player";
 // Game - UI, Create players & boards - predetermined corrds, gameOver(), userInput
 
 class Game {
+  _player;
+  _playerBoard;
+  _bot;
+  _botBoard;
+
   constructor() {
     this.init();
 
@@ -21,22 +26,22 @@ class Game {
 
   init() {
     // create 10 x 10 board
-    const playerBoard = new Gameboard();
-    playerBoard.init();
-    const botBoard = new Gameboard();
-    botBoard.init();
+    this._playerBoard = new Gameboard();
+    this._playerBoard.init();
+    this._botBoard = new Gameboard();
+    this._botBoard.init();
 
     // create 2 players - human & bot
-    const player = new Player("Human", playerBoard);
-    const bot = new Player("Bot", botBoard);
+    this._player = new Player("Human", this._playerBoard);
+    this._bot = new Player("Bot", this._botBoard);
 
-    this.displayBoard(playerBoard, "left");
-    this.displayBoard(botBoard, "right");
+    this.displayBoard(this._playerBoard, "left");
+    this.displayBoard(this._botBoard, "right");
 
     // create ships for each board & place them
-    this.displayShips(playerBoard, "left");
-    this.displayShips(botBoard, "right");
-    this.hideBotShips(botBoard, "right");
+    this.displayShips(this._playerBoard, "left");
+    this.displayShips(this._botBoard, "right");
+    this.hideBotShips(this._botBoard, "right");
 
     // add event listeners
     const rightBoard = document.querySelector(".right");
@@ -45,7 +50,7 @@ class Game {
       .forEach((cell) =>
         cell.addEventListener(
           "click",
-          this.playerAttack.bind(this, botBoard, player)
+          this.playerAttack.bind(this, this._botBoard, this._player)
         )
       );
   }
@@ -101,10 +106,14 @@ class Game {
     document
       .querySelectorAll(".gameboard")
       .forEach((board) => board.classList.remove("inactive"));
+
     if (current === 1) {
       this.turn = 2;
       document.querySelector(".right").classList.add("inactive");
-      // this.botAttack();
+
+      setTimeout(() => {
+        this.botAttack(this._playerBoard, this._bot, "left");
+      }, 700);
     } else {
       this.turn = 1;
       document.querySelector(".left").classList.add("inactive");
@@ -121,23 +130,34 @@ class Game {
     player.attack(board, coords);
 
     this.markCell(cell, this.turn);
+
+    this.gameOver(board);
   }
 
   botAttack(board, player, className) {
     const coords = player.generateBotMove();
+
     player.attack(board, coords);
 
-    const leftBoard = document.querySelector(`.${left}`);
+    const leftBoard = document.querySelector(`.${className}`);
     const cell = leftBoard.querySelector(`[data-index="${coords}"]`);
 
     player.attack(board, coords);
 
     this.markCell(cell, this.turn);
+
+    this.gameOver(board);
   }
 
   markCell(cell, turn) {
     if (cell.classList.contains("ship")) {
       cell.classList.add("hit");
+
+      if (turn == 2) {
+        setTimeout(() => {
+          this.botAttack(this._playerBoard, this._bot, "left");
+        }, 700);
+      }
     } else {
       cell.classList.add("miss");
 
@@ -147,7 +167,25 @@ class Game {
     }
   }
 
+  sinkShip(board, coords) {
+    const ship = board.getShip(coords);
+
+    if (ship.isSunk) {
+    }
+  }
+
   // method to end game
+  gameOver(board) {
+    if (!board.allSunk) return;
+
+    // make both boards inactive
+    document
+      .querySelectorAll(".gameboard")
+      .forEach((board) => board.classList.add("inactive"));
+
+    // alert gameover
+    alert("gameover");
+  }
 }
 
 const game = new Game();

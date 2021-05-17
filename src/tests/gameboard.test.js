@@ -186,10 +186,10 @@ test("Determine whether all ships have been sunk", () => {
   expect(board.allSunk).toBeTruthy();
 });
 
-test("Attacking on already hit coord", () => {
-  const board = new Gameboard();
+// test("Attacking on already hit coord", () => {
+//   const board = new Gameboard();
 
-  board.init(10);
-  board.receiveAttack(4);
-  expect(() => board.receiveAttack(4)).toThrow("Already hit");
-});
+//   board.init(10);
+//   board.receiveAttack(4);
+//   expect(() => board.receiveAttack(4)).toThrow("Already hit");
+// });

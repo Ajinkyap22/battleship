@@ -3,6 +3,7 @@ class Ship {
     this.length = length;
     this.sunk = sunk;
     this.cells = [];
+    this.adjCoords = [];
     this.positions = Array(this.length).fill(0);
   }
 
