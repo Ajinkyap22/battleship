@@ -72,3 +72,12 @@ header {
   font-size: 0.4rem;
   background-color: lightgray;
 }
+
+.border {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.4rem;
+  background-color: lightgray;
+  opacity: 0.5;
+}
