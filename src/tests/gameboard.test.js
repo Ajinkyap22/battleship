@@ -68,6 +68,7 @@ test("adjacent coords becoming invalid after placing the ship vertically", () =>
   expect(board.board[14].isValid).toBeFalsy();
   expect(board.board[22].isValid).toBeFalsy();
   expect(board.board[24].isValid).toBeFalsy();
+  expect(ship.adjCoords.length).toBe(10);
 });
 
 test("adjacent coords becoming invalid after placing the ship horrizontally", () => {
@@ -88,6 +89,8 @@ test("adjacent coords becoming invalid after placing the ship horrizontally", ()
   expect(board.board[4].isValid).toBeFalsy();
   expect(board.board[23].isValid).toBeFalsy();
   expect(board.board[24].isValid).toBeFalsy();
+
+  expect(ship.adjCoords.length).toBe(10);
 });
 
 test("Placing ships at random coords", () => {

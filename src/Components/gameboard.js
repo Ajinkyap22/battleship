@@ -36,13 +36,13 @@ class Gameboard {
       if (axis == "x") {
         cells.push(coords + i);
         this.markAsShip(coords + i);
-        this.markAsInvalid(ship, coords, axis);
       } else {
         cells.push(coords + i * 10);
         this.markAsShip(coords + i * 10);
-        this.markAsInvalid(ship, coords, axis);
       }
     }
+
+    this.markAsInvalid(ship, coords, axis);
     ship.cells.push(...cells);
 
     if (this.ships.length < 10) this.ships.push(ship);
@@ -147,60 +147,102 @@ class Gameboard {
   markAsInvalid(ship, coords, axis) {
     if (axis === "x") {
       // left of ship
-      if (this.board[coords - 1]) this.board[coords - 1].isValid = false;
+      if (this.board[coords - 1]) {
+        this.board[coords - 1].isValid = false;
+        ship.adjCoords.push(coords - 1);
+      }
 
       // right of ship
-      if (this.board[coords + ship.length])
+      if (this.board[coords + ship.length]) {
         this.board[coords + ship.length].isValid = false;
+        ship.adjCoords.push(coords + ship.length);
+      }
 
       // top left of ship
-      if (this.board[coords - 11]) this.board[coords - 11].isValid = false;
+      if (this.board[coords - 11]) {
+        this.board[coords - 11].isValid = false;
+        ship.adjCoords.push(coords - 11);
+      }
 
       // top right of ship
-      if (this.board[coords + (ship.length - 1) - 9])
+      if (this.board[coords + (ship.length - 1) - 9]) {
         this.board[coords + (ship.length - 1) - 9].isValid = false;
+        ship.adjCoords.push(coords + (ship.length - 1) - 9);
+      }
 
       // bottom left of ship
-      if (this.board[coords + 9]) this.board[coords + 9].isValid = false;
+      if (this.board[coords + 9]) {
+        this.board[coords + 9].isValid = false;
+        ship.adjCoords.push(coords + 9);
+      }
 
       // bottom right of ship
-      if (this.board[coords + (ship.length - 1) + 11])
+      if (this.board[coords + (ship.length - 1) + 11]) {
         this.board[coords + (ship.length - 1) + 11].isValid = false;
+        ship.adjCoords.push(coords + (ship.length - 1) + 11);
+      }
 
       for (let i = coords; i < coords + ship.length; i++) {
         // right coords
-        if (this.board[i + 10]) this.board[i + 10].isValid = false;
+        if (this.board[i + 10]) {
+          this.board[i + 10].isValid = false;
+          ship.adjCoords.push(i + 10);
+        }
 
         // left coords
-        if (this.board[i - 10]) this.board[i - 10].isValid = false;
+        if (this.board[i - 10]) {
+          this.board[i - 10].isValid = false;
+          ship.adjCoords.push(i - 10);
+        }
       }
     } else {
       // cell below ship
-      if (this.board[coords + ship.length * 10])
+      if (this.board[coords + ship.length * 10]) {
         this.board[coords + ship.length * 10].isValid = false;
+        ship.adjCoords.push(coords + ship.length * 10);
+      }
 
       // cell above ship
-      if (this.board[coords - 10]) this.board[coords - 10].isValid = false;
+      if (this.board[coords - 10]) {
+        this.board[coords - 10].isValid = false;
+        ship.adjCoords.push(coords - 10);
+      }
 
       // top left
-      if (this.board[coords - 11]) this.board[coords - 11].isValid = false;
+      if (this.board[coords - 11]) {
+        this.board[coords - 11].isValid = false;
+        ship.adjCoords.push(coords - 11);
+      }
 
       // top right
-      if (this.board[coords - 9]) this.board[coords - 9].isValid = false;
+      if (this.board[coords - 9]) {
+        this.board[coords - 9].isValid = false;
+        ship.adjCoords.push(coords - 9);
+      }
 
       // bottom left
-      if (this.board[coords + ship.length * 10 - 1])
+      if (this.board[coords + ship.length * 10 - 1]) {
         this.board[coords + ship.length * 10 - 1].isValid = false;
+        ship.adjCoords.push(coords + ship.length * 10 - 1);
+      }
 
       // bottom right
-      if (this.board[coords + ship.length * 10 + 1])
+      if (this.board[coords + ship.length * 10 + 1]) {
         this.board[coords + ship.length * 10 + 1].isValid = false;
+        ship.adjCoords.push(coords + ship.length * 10 + 1);
+      }
 
       for (let i = coords; i < coords + ship.length * 10; i += 10) {
         // cells on right of ship
-        if (this.board[i + 1]) this.board[i + 1].isValid = false;
+        if (this.board[i + 1]) {
+          this.board[i + 1].isValid = false;
+          ship.adjCoords.push(i + 1);
+        }
         // cells on left of ship
-        if (this.board[i - 1]) this.board[i - 1].isValid = false;
+        if (this.board[i - 1]) {
+          this.board[i - 1].isValid = false;
+          ship.adjCoords.push(i - 1);
+        }
       }
     }
   }

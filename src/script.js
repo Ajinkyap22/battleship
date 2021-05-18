@@ -4,7 +4,7 @@ import Player from "./Components/player";
 
 // TODO - Game tests
 
-// Doing -
+// Doing - size 1 ship boarders not getting marked & maybe bot isnt playing every turn
 
 // Done - Ship tests, Gameboard tests, Player tests
 
@@ -127,9 +127,11 @@ class Game {
     const cell = e.target;
     const coords = +cell.dataset.index;
 
+    const rightBoard = document.querySelector(".right");
+
     player.attack(board, coords);
 
-    this.markCell(cell, this.turn);
+    this.markCell(board, cell, this.turn, rightBoard);
 
     this.gameOver(board);
   }
@@ -144,14 +146,16 @@ class Game {
 
     player.attack(board, coords);
 
-    this.markCell(cell, this.turn);
+    this.markCell(board, cell, this.turn, leftBoard);
 
     this.gameOver(board);
   }
 
-  markCell(cell, turn) {
+  markCell(board, cell, turn, domBoard) {
     if (cell.classList.contains("ship")) {
       cell.classList.add("hit");
+
+      this.sinkShip(board, +cell.dataset.index, domBoard);
 
       if (turn == 2) {
         setTimeout(() => {
@@ -167,10 +171,15 @@ class Game {
     }
   }
 
-  sinkShip(board, coords) {
+  sinkShip(board, coords, domBoard) {
     const ship = board.getShip(coords);
 
-    if (ship.isSunk) {
+    if (ship.sunk) {
+      ship.adjCoords.forEach((coord) => {
+        const cell = domBoard.querySelector(`[data-index="${coord}"]`);
+        cell.textContent = "⚫";
+        cell.classList.add("border");
+      });
     }
   }
 
