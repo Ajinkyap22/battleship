@@ -113,7 +113,7 @@ test("Gameboard throwing error for invalid coords v1", () => {
 
   board.init();
 
-  expect(() => board.placeShip(ship, 98)).toThrow("Cannot place the ship here");
+  expect(() => board.placeShip(ship, 88)).toThrow("Cannot place the ship here");
 });
 
 test("Gameboard throwing error for invalid coords v2", () => {

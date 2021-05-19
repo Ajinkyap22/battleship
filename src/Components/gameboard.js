@@ -101,7 +101,10 @@ class Gameboard {
     }
 
     if (axis == "x") {
-      if (coords + ship.length > this.board.length) {
+      if (
+        coords + ship.length > this.board.length ||
+        (coords + ship.length - 1) % 10 === 0
+      ) {
         return false;
       }
 
@@ -146,38 +149,47 @@ class Gameboard {
 
   markAsInvalid(ship, coords, axis) {
     if (axis === "x") {
-      // left of ship
-      if (this.board[coords - 1]) {
+      if (this.board[coords - 1] && coords % 10 !== 0) {
+        // left of ship
         this.board[coords - 1].isValid = false;
         ship.adjCoords.push(coords - 1);
       }
 
       // right of ship
-      if (this.board[coords + ship.length]) {
+      if (
+        this.board[coords + ship.length] &&
+        (coords + ship.length) % 10 !== 0
+      ) {
         this.board[coords + ship.length].isValid = false;
         ship.adjCoords.push(coords + ship.length);
       }
 
       // top left of ship
-      if (this.board[coords - 11]) {
+      if (this.board[coords - 11] && coords % 10 !== 0) {
         this.board[coords - 11].isValid = false;
         ship.adjCoords.push(coords - 11);
       }
 
       // top right of ship
-      if (this.board[coords + (ship.length - 1) - 9]) {
+      if (
+        this.board[coords + (ship.length - 1) - 9] &&
+        (coords + (ship.length - 1) - 9) % 10 !== 0
+      ) {
         this.board[coords + (ship.length - 1) - 9].isValid = false;
         ship.adjCoords.push(coords + (ship.length - 1) - 9);
       }
 
       // bottom left of ship
-      if (this.board[coords + 9]) {
+      if (this.board[coords + 9] && (coords + 9) % 10 !== 9) {
         this.board[coords + 9].isValid = false;
         ship.adjCoords.push(coords + 9);
       }
 
       // bottom right of ship
-      if (this.board[coords + (ship.length - 1) + 11]) {
+      if (
+        this.board[coords + (ship.length - 1) + 11] &&
+        (coords + (ship.length - 1) + 11) % 10 !== 0
+      ) {
         this.board[coords + (ship.length - 1) + 11].isValid = false;
         ship.adjCoords.push(coords + (ship.length - 1) + 11);
       }
@@ -209,37 +221,37 @@ class Gameboard {
       }
 
       // top left
-      if (this.board[coords - 11]) {
+      if (this.board[coords - 11] && coords % 10 !== 0) {
         this.board[coords - 11].isValid = false;
         ship.adjCoords.push(coords - 11);
       }
 
       // top right
-      if (this.board[coords - 9]) {
+      if (this.board[coords - 9] && coords % 10 !== 9) {
         this.board[coords - 9].isValid = false;
         ship.adjCoords.push(coords - 9);
       }
 
       // bottom left
-      if (this.board[coords + ship.length * 10 - 1]) {
+      if (this.board[coords + ship.length * 10 - 1] && coords % 10 !== 0) {
         this.board[coords + ship.length * 10 - 1].isValid = false;
         ship.adjCoords.push(coords + ship.length * 10 - 1);
       }
 
       // bottom right
-      if (this.board[coords + ship.length * 10 + 1]) {
+      if (this.board[coords + ship.length * 10 + 1] && coords % 10 !== 9) {
         this.board[coords + ship.length * 10 + 1].isValid = false;
         ship.adjCoords.push(coords + ship.length * 10 + 1);
       }
 
       for (let i = coords; i < coords + ship.length * 10; i += 10) {
         // cells on right of ship
-        if (this.board[i + 1]) {
+        if (this.board[i + 1] && (i + 1) % 10 !== 0) {
           this.board[i + 1].isValid = false;
           ship.adjCoords.push(i + 1);
         }
         // cells on left of ship
-        if (this.board[i - 1]) {
+        if (this.board[i - 1] && (i - 1) % 10 !== 9) {
           this.board[i - 1].isValid = false;
           ship.adjCoords.push(i - 1);
         }

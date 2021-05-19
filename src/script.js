@@ -4,7 +4,7 @@ import Player from "./Components/player";
 
 // TODO - Game tests
 
-// Doing - size 1 ship boarders not getting marked & maybe bot isnt playing every turn
+// Doing - Smart bot
 
 // Done - Ship tests, Gameboard tests, Player tests
 
@@ -17,14 +17,15 @@ class Game {
   _playerBoard;
   _bot;
   _botBoard;
+  _gameOver;
 
   constructor() {
     this.init();
-
     this.turn = 1;
   }
 
   init() {
+    this._gameOver = false;
     // create 10 x 10 board
     this._playerBoard = new Gameboard();
     this._playerBoard.init();
@@ -127,6 +128,8 @@ class Game {
     const cell = e.target;
     const coords = +cell.dataset.index;
 
+    if (board.board[coords].isHit) return;
+
     const rightBoard = document.querySelector(".right");
 
     player.attack(board, coords);
@@ -139,11 +142,12 @@ class Game {
   botAttack(board, player, className) {
     const coords = player.generateBotMove();
 
-    player.attack(board, coords);
-
     const leftBoard = document.querySelector(`.${className}`);
     const cell = leftBoard.querySelector(`[data-index="${coords}"]`);
 
+    if (board.board[coords].isHit)
+      return this.botAttack(board, player, className);
+    // if adjcoords is empty call this, else call smartHit
     player.attack(board, coords);
 
     this.markCell(board, cell, this.turn, leftBoard);
@@ -157,8 +161,9 @@ class Game {
 
       this.sinkShip(board, +cell.dataset.index, domBoard);
 
-      if (turn == 2) {
+      if (turn == 2 && !this._gameOver) {
         setTimeout(() => {
+          // call create adj coords method & then botattack
           this.botAttack(this._playerBoard, this._bot, "left");
         }, 700);
       }
@@ -178,7 +183,8 @@ class Game {
       ship.adjCoords.forEach((coord) => {
         const cell = domBoard.querySelector(`[data-index="${coord}"]`);
         cell.textContent = "⚫";
-        cell.classList.add("border");
+        if (!cell.classList.contains("miss")) cell.classList.add("border");
+        board.board[coord].isHit = true;
       });
     }
   }
@@ -186,6 +192,8 @@ class Game {
   // method to end game
   gameOver(board) {
     if (!board.allSunk) return;
+
+    this._gameOver = true;
 
     // make both boards inactive
     document
