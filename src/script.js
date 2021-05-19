@@ -134,7 +134,7 @@ class Game {
 
     player.attack(board, coords);
 
-    this.markCell(board, cell, this.turn, rightBoard);
+    this.markCell(board, cell, this.turn, rightBoard, player);
 
     this.gameOver(board);
   }
@@ -147,24 +147,27 @@ class Game {
 
     if (board.board[coords].isHit)
       return this.botAttack(board, player, className);
-    // if adjcoords is empty call this, else call smartHit
-    player.attack(board, coords);
 
-    this.markCell(board, cell, this.turn, leftBoard);
+    if (player.adjCoords.length === 0) player.attack(board, coords);
+    else player.smartHit(board);
+
+    this.markCell(board, cell, this.turn, leftBoard, player);
 
     this.gameOver(board);
   }
 
-  markCell(board, cell, turn, domBoard) {
+  markCell(board, cell, turn, domBoard, player) {
     if (cell.classList.contains("ship")) {
       cell.classList.add("hit");
 
-      this.sinkShip(board, +cell.dataset.index, domBoard);
+      const coords = +cell.dataset.index;
+
+      this.sinkShip(board, coords, domBoard, player);
 
       if (turn == 2 && !this._gameOver) {
         setTimeout(() => {
-          // call create adj coords method & then botattack
-          this.botAttack(this._playerBoard, this._bot, "left");
+          player.createAdjCoords(coords);
+          this.botAttack(board, player, "left");
         }, 700);
       }
     } else {
@@ -176,17 +179,20 @@ class Game {
     }
   }
 
-  sinkShip(board, coords, domBoard) {
+  sinkShip(board, coords, domBoard, player) {
     const ship = board.getShip(coords);
 
     if (ship.sunk) {
       ship.adjCoords.forEach((coord) => {
         const cell = domBoard.querySelector(`[data-index="${coord}"]`);
         cell.textContent = "⚫";
+
         if (!cell.classList.contains("miss")) cell.classList.add("border");
         board.board[coord].isHit = true;
       });
     }
+
+    player.adjCoords.length = 0;
   }
 
   // method to end game
