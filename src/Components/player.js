@@ -10,22 +10,25 @@ class Player {
   }
 
   attack(board, coords) {
-    if (!board.board[coords].isHit) {
+    console.log(coords);
+    if (!board.board[coords].isHit && board.board[coords]) {
       board.receiveAttack(coords);
     }
   }
 
   smartHit(board) {
-    let randomCoord;
+    let randomIndex;
 
     while (true) {
-      randomCoord = Math.floor(Math.random() * this.adjCoords.length);
-      if (board.board[randomCoord] && !board.board[randomCoord].isHit) break;
+      randomIndex = Math.floor(Math.random() * this.adjCoords.length);
+      if (board.board[randomIndex] && !board.board[randomIndex].isHit) break;
     }
 
-    this.attack(board, ...this.adjCoords.splice(randomCoord, 1));
+    const randomCoord = this.adjCoords.splice(randomIndex, 1);
 
-    console.log(`Random coord: ${this.adjCoords[randomCoord]}`);
+    this.attack(board, ...randomCoord);
+
+    return randomCoord[0];
   }
 
   createAdjCoords(coords) {
@@ -44,8 +47,6 @@ class Player {
     ];
 
     this.adjCoords.push(...adj);
-
-    console.log(coords);
   }
 }
 

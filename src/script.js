@@ -4,7 +4,7 @@ import Player from "./Components/player";
 
 // TODO - Game tests
 
-// Doing - Smart bot
+// Doing - Smart bot - cont number of bot turns & number of cells hit to check if it plays every turn
 
 // Done - Ship tests, Gameboard tests, Player tests
 
@@ -140,16 +140,21 @@ class Game {
   }
 
   botAttack(board, player, className) {
-    const coords = player.generateBotMove();
-
     const leftBoard = document.querySelector(`.${className}`);
+    let coords;
+
+    if (player.adjCoords.length !== 0) {
+      coords = player.smartHit(board);
+    } else {
+      coords = player.generateBotMove();
+
+      if (board.board[coords].isHit)
+        return this.botAttack(board, player, className);
+
+      player.attack(board, coords);
+    }
+
     const cell = leftBoard.querySelector(`[data-index="${coords}"]`);
-
-    if (board.board[coords].isHit)
-      return this.botAttack(board, player, className);
-
-    if (player.adjCoords.length === 0) player.attack(board, coords);
-    else player.smartHit(board);
 
     this.markCell(board, cell, this.turn, leftBoard, player);
 
@@ -157,16 +162,21 @@ class Game {
   }
 
   markCell(board, cell, turn, domBoard, player) {
+    console.log(
+      `${turn} Marking: ${cell.dataset.index} ${
+        board.board[+cell.dataset.index].isHit
+      }`
+    );
     if (cell.classList.contains("ship")) {
       cell.classList.add("hit");
 
       const coords = +cell.dataset.index;
 
-      this.sinkShip(board, coords, domBoard, player);
+      const prevShipSunk = this.sinkShip(board, coords, domBoard, player);
 
       if (turn == 2 && !this._gameOver) {
         setTimeout(() => {
-          player.createAdjCoords(coords);
+          if (!prevShipSunk) player.createAdjCoords(coords);
           this.botAttack(board, player, "left");
         }, 700);
       }
@@ -183,6 +193,9 @@ class Game {
     const ship = board.getShip(coords);
 
     if (ship.sunk) {
+      player.adjCoords.length = 0;
+      console.log(player.adjCoords);
+
       ship.adjCoords.forEach((coord) => {
         const cell = domBoard.querySelector(`[data-index="${coord}"]`);
         cell.textContent = "⚫";
@@ -190,9 +203,8 @@ class Game {
         if (!cell.classList.contains("miss")) cell.classList.add("border");
         board.board[coord].isHit = true;
       });
+      return true;
     }
-
-    player.adjCoords.length = 0;
   }
 
   // method to end game
