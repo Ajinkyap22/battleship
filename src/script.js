@@ -4,7 +4,7 @@ import Player from "./Components/player";
 
 // TODO - Game tests
 
-// Doing - Smart bot - cont number of bot turns & number of cells hit to check if it plays every turn
+// Doing - Smart bot - count number of bot turns & number of cells hit to check if it plays every turn
 
 // Done - Ship tests, Gameboard tests, Player tests
 
@@ -22,6 +22,10 @@ class Game {
   constructor() {
     this.init();
     this.turn = 1;
+
+    document
+      .querySelector(".reset")
+      .addEventListener("click", this.reset.bind(this));
   }
 
   init() {
@@ -117,7 +121,6 @@ class Game {
       }, 700);
     } else {
       this.turn = 1;
-      document.querySelector(".left").classList.add("inactive");
     }
   }
 
@@ -162,11 +165,6 @@ class Game {
   }
 
   markCell(board, cell, turn, domBoard, player) {
-    console.log(
-      `${turn} Marking: ${cell.dataset.index} ${
-        board.board[+cell.dataset.index].isHit
-      }`
-    );
     if (cell.classList.contains("ship")) {
       cell.classList.add("hit");
 
@@ -194,7 +192,6 @@ class Game {
 
     if (ship.sunk) {
       player.adjCoords.length = 0;
-      console.log(player.adjCoords);
 
       ship.adjCoords.forEach((coord) => {
         const cell = domBoard.querySelector(`[data-index="${coord}"]`);
@@ -203,6 +200,7 @@ class Game {
         if (!cell.classList.contains("miss")) cell.classList.add("border");
         board.board[coord].isHit = true;
       });
+
       return true;
     }
   }
@@ -220,6 +218,19 @@ class Game {
 
     // alert gameover
     alert("gameover");
+  }
+
+  reset() {
+    this._gameOver = false;
+
+    console.log("nice");
+
+    this.displayBoard(this._playerBoard, "left");
+    this.displayBoard(this._botBoard, "right");
+
+    this.displayShips(this._playerBoard, "left");
+    this.displayShips(this._botBoard, "right");
+    this.hideBotShips(this._botBoard, "right");
   }
 }
 

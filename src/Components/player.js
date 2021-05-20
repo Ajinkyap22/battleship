@@ -10,8 +10,7 @@ class Player {
   }
 
   attack(board, coords) {
-    console.log(coords);
-    if (!board.board[coords].isHit && board.board[coords]) {
+    if (!board.board[coords].isHit) {
       board.receiveAttack(coords);
     }
   }
@@ -21,7 +20,11 @@ class Player {
 
     while (true) {
       randomIndex = Math.floor(Math.random() * this.adjCoords.length);
-      if (board.board[randomIndex] && !board.board[randomIndex].isHit) break;
+      if (
+        board.board[this.adjCoords[randomIndex]] &&
+        !board.board[this.adjCoords[randomIndex]].isHit
+      )
+        break;
     }
 
     const randomCoord = this.adjCoords.splice(randomIndex, 1);

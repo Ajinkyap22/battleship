@@ -101,11 +101,16 @@ class Gameboard {
     }
 
     if (axis == "x") {
-      if (
-        coords + ship.length > this.board.length ||
-        (coords + ship.length - 1) % 10 === 0
-      ) {
+      // if ship size > 1 & any of coords % 10 === 9 then false
+
+      if (coords + ship.length > this.board.length) {
         return false;
+      }
+
+      if (ship.length > 1) {
+        for (let i = coords; i < coords + ship.length; i++) {
+          if (i % 10 === 9) return false;
+        }
       }
 
       for (let i = 0; i < ship.length; i++) {
