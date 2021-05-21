@@ -11,6 +11,7 @@ class Gameboard {
 
   // board initialization
   init() {
+    this.board = [];
     for (let i = 0; i < this.size; i++) {
       this.board.push({ hasShip: false, isHit: false, isValid: true });
     }
@@ -18,6 +19,7 @@ class Gameboard {
 
   // ship methods
   createShips() {
+    this.ships = [];
     const sizes = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4];
 
     for (const size of sizes) {
@@ -103,12 +105,12 @@ class Gameboard {
     if (axis == "x") {
       // if ship size > 1 & any of coords % 10 === 9 then false
 
-      if (coords + ship.length > this.board.length) {
+      if (coords + (ship.length - 1) > this.board.length) {
         return false;
       }
 
       if (ship.length > 1) {
-        for (let i = coords; i < coords + ship.length; i++) {
+        for (let i = coords; i < coords + ship.length - 1; i++) {
           if (i % 10 === 9) return false;
         }
       }
@@ -119,7 +121,7 @@ class Gameboard {
         }
       }
     } else {
-      if (coords + ship.length * 10 > this.board.length) {
+      if (coords + (ship.length - 1) * 10 > this.board.length) {
         return false;
       }
 

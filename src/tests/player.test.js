@@ -28,3 +28,23 @@ test("successful attack on opponents ship", () => {
   expect(board.board[4].isHit).toBeTruthy();
   expect(ship.positions).toEqual([0, 1, 0]);
 });
+
+test("Returning false for invalid cells", () => {
+  const board = new Gameboard();
+  const playerBoard = new Gameboard();
+
+  board.init();
+
+  const player = new Player("Human", playerBoard);
+
+  player.attack(board, 32);
+
+  expect(player.validateCell(board, 91, 101)).toBeFalsy();
+  expect(player.validateCell(board, 31, 32)).toBeFalsy();
+  expect(player.validateCell(board, 20, 18)).toBeFalsy();
+  expect(player.validateCell(board, 39, 40)).toBeFalsy();
+});
+
+test("Creating non-empty adjacent coords array", () => {});
+
+test("Succesful bot attack using smart hit", () => {});

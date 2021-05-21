@@ -16,40 +16,45 @@ class Player {
   }
 
   smartHit(board) {
-    let randomIndex;
+    const randomCoord = this.adjCoords.pop();
 
-    while (true) {
-      randomIndex = Math.floor(Math.random() * this.adjCoords.length);
-      if (
-        board.board[this.adjCoords[randomIndex]] &&
-        !board.board[this.adjCoords[randomIndex]].isHit
-      )
-        break;
-    }
+    this.attack(board, randomCoord);
 
-    const randomCoord = this.adjCoords.splice(randomIndex, 1);
-
-    this.attack(board, ...randomCoord);
-
-    return randomCoord[0];
+    return randomCoord;
   }
 
-  createAdjCoords(coords) {
+  createAdjCoords(board, coords) {
     // empty adjCoords first
     this.adjCoords.length = 0;
 
     const adj = [
-      coords + 1,
+      coords + 20,
+      coords - 20,
       coords + 2,
-      coords - 1,
       coords - 2,
       coords - 10,
-      coords - 20,
       coords + 10,
-      coords + 20,
+      coords - 1,
+      coords + 1,
     ];
 
-    this.adjCoords.push(...adj);
+    adj.forEach((cell) => {
+      if (this.validateCell(board, coords, cell)) this.adjCoords.push(cell);
+    });
+  }
+
+  validateCell(board, coords, cell) {
+    if (!board.board[cell] || board.board[cell].isHit) return false;
+
+    if (coords % 10 === 0) {
+      if (coords - cell < 10) return false;
+    }
+
+    if (coords % 10 === 9) {
+      if (cell - coords < 10) return false;
+    }
+
+    return true;
   }
 }
 

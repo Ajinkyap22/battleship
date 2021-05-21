@@ -18,10 +18,13 @@ class Game {
   _bot;
   _botBoard;
   _gameOver;
+  _botBoardContainer;
 
   constructor() {
-    this.init();
     this.turn = 1;
+    this._botBoardContainer = document.querySelector(".right");
+
+    this.init();
 
     document
       .querySelector(".reset")
@@ -48,9 +51,7 @@ class Game {
     this.displayShips(this._botBoard, "right");
     this.hideBotShips(this._botBoard, "right");
 
-    // add event listeners
-    const rightBoard = document.querySelector(".right");
-    rightBoard
+    this._botBoardContainer
       .querySelectorAll(".cell")
       .forEach((cell) =>
         cell.addEventListener(
@@ -62,6 +63,9 @@ class Game {
 
   // method to create board on ui
   displayBoard(board, name) {
+    const boardContainer = document.querySelector(`.${name}`);
+    boardContainer.innerHTML = "";
+
     for (let i = 0; i < board.size; i++) {
       // create a div element
       const cell = document.createElement("div");
@@ -71,7 +75,7 @@ class Game {
       cell.setAttribute("data-index", i);
 
       // append it to the parent
-      document.querySelector(`.${name}`).append(cell);
+      boardContainer.append(cell);
     }
   }
 
@@ -174,7 +178,7 @@ class Game {
 
       if (turn == 2 && !this._gameOver) {
         setTimeout(() => {
-          if (!prevShipSunk) player.createAdjCoords(coords);
+          if (!prevShipSunk) player.createAdjCoords(board, coords);
           this.botAttack(board, player, "left");
         }, 700);
       }
@@ -222,8 +226,10 @@ class Game {
 
   reset() {
     this._gameOver = false;
+    this.turn = 1;
 
-    console.log("nice");
+    this._playerBoard.init();
+    this._botBoard.init();
 
     this.displayBoard(this._playerBoard, "left");
     this.displayBoard(this._botBoard, "right");
@@ -231,6 +237,19 @@ class Game {
     this.displayShips(this._playerBoard, "left");
     this.displayShips(this._botBoard, "right");
     this.hideBotShips(this._botBoard, "right");
+
+    document
+      .querySelectorAll(".gameboard")
+      .forEach((board) => board.classList.remove("inactive"));
+
+    this._botBoardContainer
+      .querySelectorAll(".cell")
+      .forEach((cell) =>
+        cell.addEventListener(
+          "click",
+          this.playerAttack.bind(this, this._botBoard, this._player)
+        )
+      );
   }
 }
 
