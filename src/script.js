@@ -1,12 +1,11 @@
-import Ship from "./Components/ship";
 import Gameboard from "./Components/gameboard";
 import Player from "./Components/player";
 
-// TODO - Game tests
+// TODO - UI
 
-// Doing - Smart bot - count number of bot turns & number of cells hit to check if it plays every turn
+// Doing -
 
-// Done - Ship tests, Gameboard tests, Player tests
+// Done - Ship tests, Gameboard tests, Player tests, AI tests, Game codes
 
 // Not Sure/ Review
 
@@ -135,6 +134,7 @@ class Game {
     const cell = e.target;
     const coords = +cell.dataset.index;
 
+    // if cell is already hit
     if (board.board[coords].isHit) return;
 
     const rightBoard = document.querySelector(".right");
@@ -150,6 +150,7 @@ class Game {
     const leftBoard = document.querySelector(`.${className}`);
     let coords;
 
+    // keep calling smart hit until previously hit ship is sunk
     if (player.adjCoords.length !== 0) {
       coords = player.smartHit(board);
     } else {
@@ -178,6 +179,7 @@ class Game {
 
       if (turn == 2 && !this._gameOver) {
         setTimeout(() => {
+          // create adjacent coords for smart hit if the ship hasnt sunk yet
           if (!prevShipSunk) player.createAdjCoords(board, coords);
           this.botAttack(board, player, "left");
         }, 700);
@@ -195,6 +197,7 @@ class Game {
     const ship = board.getShip(coords);
 
     if (ship.sunk) {
+      // empty the array after sinking the ship
       player.adjCoords.length = 0;
 
       ship.adjCoords.forEach((coord) => {

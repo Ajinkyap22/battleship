@@ -35,9 +35,11 @@ class Gameboard {
       throw new Error("Cannot place the ship here");
 
     for (let i = 0; i < ship.length; i++) {
+      // horrizontally
       if (axis == "x") {
         cells.push(coords + i);
         this.markAsShip(coords + i);
+        // vertically
       } else {
         cells.push(coords + i * 10);
         this.markAsShip(coords + i * 10);
@@ -47,12 +49,14 @@ class Gameboard {
     this.markAsInvalid(ship, coords, axis);
     ship.cells.push(...cells);
 
+    // for testing
     if (this.ships.length < 10) this.ships.push(ship);
   }
 
   autoPlace(ship) {
     let [coords, axis] = this.generateRandomCoords();
 
+    // keep generating random coords until they are valid
     while (!this.validateCoords(ship, coords, axis)) {
       [coords, axis] = this.generateRandomCoords();
     }
@@ -78,6 +82,7 @@ class Gameboard {
     //   throw new Error("Already hit");
     // }
 
+    // if cell is already hit
     if (this.board[coords].isHit) return;
 
     // Mark coord as hit
@@ -88,7 +93,7 @@ class Gameboard {
       this.markAsHit(coords);
     }
 
-    // Determine whether ship has been sunk
+    // Determine whether all ships have been sunk
     this.allShipsSunk();
   }
 
@@ -103,35 +108,28 @@ class Gameboard {
     }
 
     if (axis == "x") {
-      // if ship size > 1 & any of coords % 10 === 9 then false
-
       if (coords + (ship.length - 1) > this.board.length) {
         return false;
       }
 
-      if (ship.length > 1) {
-        for (let i = coords; i < coords + ship.length - 1; i++) {
-          if (i % 10 === 9) return false;
-        }
-      }
-
       for (let i = 0; i < ship.length; i++) {
-        if (this.board[coords + i].hasShip || !this.board[coords + i].isValid) {
+        // if a ship/border already exists at the coords
+        if (this.board[coords + i].hasShip || !this.board[coords + i].isValid)
           return false;
-        }
+
+        // if ship crosses over to the next row
+        if (ship.length > 1 && i < ship.length - 1 && (coords + i) % 10 === 9)
+          return false;
       }
     } else {
-      if (coords + (ship.length - 1) * 10 > this.board.length) {
-        return false;
-      }
+      if (coords + (ship.length - 1) * 10 > this.board.length) return false;
 
       for (let i = 0; i < ship.length; i++) {
         if (
           this.board[coords + i * 10].hasShip ||
           !this.board[coords + i * 10].isValid
-        ) {
+        )
           return false;
-        }
       }
     }
 
