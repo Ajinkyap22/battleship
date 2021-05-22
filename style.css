@@ -23,6 +23,7 @@ body,
   color: white;
   background-color: #202020;
   background: linear-gradient(#0d324d, #7f5a83);
+  /* background: linear-gradient(360deg, #485461 0%, #28313b 100%); */
 }
 
 header {
@@ -47,7 +48,7 @@ header {
 
 .boards {
   padding: 10px;
-  height: 75%;
+  height: 70%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -61,19 +62,49 @@ header {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  gap: 1px;
-  width: 500px;
+  width: 450px;
   height: 100%;
-  padding: 10px;
+  border-radius: 0.5rem;
+}
+
+.left {
+  background: radial-gradient(#09244b, #0b3b5c, #245c7c);
+  border: 0.6rem solid steelblue;
+}
+
+.right {
+  background: radial-gradient(#000000, #0e3605, #33570d);
+  border: 0.6rem solid limegreen;
 }
 
 .cell {
   border: 1px solid black;
 }
 
+#leftCell {
+  border: 1px solid steelblue;
+  box-shadow: 0 0 0.3rem steelblue;
+}
+
+#leftCell:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0.6rem steelblue;
+  transition: all 0.3s;
+}
+
+#rightCell {
+  border: 1px solid limegreen;
+  box-shadow: 0 0 0.3rem limegreen;
+}
+
+#rightCell:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0.6rem limegreen;
+  transition: all 0.3s;
+}
+
 .ship {
-  border: 1px solid blue;
-  background-color: lightgray;
+  background-color: whitesmoke;
 }
 
 .hidden {
@@ -86,8 +117,7 @@ header {
 }
 
 .hit {
-  border: 2px solid red;
-  background-color: rgb(255, 200, 179);
+  background-color: red;
 }
 
 .miss {
@@ -110,6 +140,7 @@ header {
 #subText {
   font-size: 1.2rem;
   font-weight: 500;
+  padding: 0.5rem;
 }
 
 .reset {
@@ -118,6 +149,7 @@ header {
   font-weight: 500;
   border: none;
   background-color: #5ec576;
+  cursor: pointer;
 }
 
 .reset:hover {
