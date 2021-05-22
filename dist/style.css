@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Exo&family=Spartan&display=swap");
+
 *,
 *::before,
 *::after {
@@ -6,6 +10,8 @@
   box-sizing: border-box;
   max-width: 100%;
   position: relative;
+  font-family: "Poppins", sans-serif;
+  font-family: "Exo", sans-serif;
 }
 
 html,
@@ -14,10 +20,29 @@ body,
   height: 100%;
   position: relative;
   text-align: center;
+  color: white;
+  background-color: #202020;
+  background: linear-gradient(#0d324d, #7f5a83);
 }
 
 header {
   padding: 10px;
+  text-transform: capitalize;
+}
+
+/* need different hovers on missed, hit & untouched cells */
+/* Need animations for ship hits */
+/* Need Boards to shrinks & grow according to tunrs */
+/* Dark background, game font */
+/* Modals for game over */
+/* Need to display whose tunr is it */
+/* Different colors for each board */
+/* Display ship data */
+/* How to play modal */
+
+#title {
+  letter-spacing: 0.2rem;
+  padding: 0.3rem;
 }
 
 .boards {
@@ -53,7 +78,7 @@ header {
 
 .hidden {
   border: 1px solid black;
-  background-color: white;
+  background-color: transparent;
 }
 
 .inactive {
@@ -80,4 +105,22 @@ header {
   font-size: 0.4rem;
   background-color: lightgray;
   opacity: 0.5;
+}
+
+#subText {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.reset {
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border: none;
+  background-color: #5ec576;
+}
+
+.reset:hover {
+  transform: scale(1.1);
+  transition: all 0.3s;
 }
