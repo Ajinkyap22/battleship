@@ -71,6 +71,7 @@ class Game {
 
       // set class for it
       cell.setAttribute("class", "cell");
+      cell.setAttribute("id", `${name}Cell`);
       cell.setAttribute("data-index", i);
 
       // append it to the parent
