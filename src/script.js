@@ -26,12 +26,15 @@ class Game {
     this.init();
 
     document
+      .querySelector(".start")
+      .addEventListener("click", this.start.bind(this));
+
+    document
       .querySelector(".reset")
       .addEventListener("click", this.reset.bind(this));
   }
 
   init() {
-    this._gameOver = false;
     // create 10 x 10 board
     this._playerBoard = new Gameboard();
     this._playerBoard.init();
@@ -45,11 +48,6 @@ class Game {
     this.displayBoard(this._playerBoard, "left");
     this.displayBoard(this._botBoard, "right");
 
-    // create ships for each board & place them
-    this.displayShips(this._playerBoard, "left");
-    this.displayShips(this._botBoard, "right");
-    this.hideBotShips(this._botBoard, "right");
-
     this._botBoardContainer
       .querySelectorAll(".cell")
       .forEach((cell) =>
@@ -58,6 +56,21 @@ class Game {
           this.playerAttack.bind(this, this._botBoard, this._player)
         )
       );
+  }
+
+  start() {
+    this._gameOver = false;
+
+    document.querySelector(".start").classList.add("hide");
+    document.querySelector(".reset").classList.remove("hide");
+
+    // create ships for each board & place them
+    this.displayShips(this._playerBoard, "left");
+    this.displayShips(this._botBoard, "right");
+    this.hideBotShips(this._botBoard, "right");
+
+    document.querySelector(".right").classList.remove("inactive");
+    document.querySelector(".right").classList.add("turn");
   }
 
   // method to create board on ui
@@ -112,25 +125,29 @@ class Game {
   }
 
   switchTurn(current) {
-    document
-      .querySelectorAll(".gameboard")
-      .forEach((board) => board.classList.remove("inactive"));
+    document.querySelectorAll(".gameboard").forEach((board) => {
+      board.classList.remove("inactive");
+      board.classList.remove("turn");
+    });
 
     if (current === 1) {
       this.turn = 2;
       document.querySelector(".right").classList.add("inactive");
+      document.querySelector(".left").classList.add("turn");
 
       setTimeout(() => {
         this.botAttack(this._playerBoard, this._bot, "left");
       }, 700);
     } else {
       this.turn = 1;
+      document.querySelector(".left").classList.add("inactive");
+      document.querySelector(".right").classList.add("turn");
     }
   }
 
   // method to take user input
   playerAttack(board, player, e) {
-    if (this.turn !== 1) return;
+    if (this.turn !== 1 || this._gameOver !== false) return;
 
     const cell = e.target;
     const coords = +cell.dataset.index;
@@ -144,7 +161,7 @@ class Game {
 
     this.markCell(board, cell, this.turn, rightBoard, player);
 
-    this.gameOver(board);
+    setTimeout(() => this.gameOver(board), 700);
   }
 
   botAttack(board, player, className) {
@@ -167,7 +184,7 @@ class Game {
 
     this.markCell(board, cell, this.turn, leftBoard, player);
 
-    this.gameOver(board);
+    setTimeout(() => this.gameOver(board), 700);
   }
 
   markCell(board, cell, turn, domBoard, player) {

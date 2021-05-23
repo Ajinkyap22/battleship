@@ -33,13 +33,14 @@ header {
 
 /* need different hovers on missed, hit & untouched cells * - Done/ 
 /* Need animations for ship hits */
-/* Need Boards to shrinks & grow according to tunrs */
+/* Need Boards to shrinks & grow according to tunrs - Done */
 /* Dark background, game font - Done */
 /* Modals for game over */
 /* Need to display whose turn is it */
 /* Different colors for each board - Done */
 /* Display ship data */
 /* How to play modal */
+/* Button to reset ships */
 
 #title {
   letter-spacing: 0.2rem;
@@ -50,7 +51,7 @@ header {
   padding: 10px;
   height: 70%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
 }
 
@@ -111,11 +112,16 @@ header {
 
 .inactive {
   opacity: 0.3;
+  transform: scale(0.9);
+}
+
+.turn {
+  transform: scale(1);
+  transition: all 0.6s;
 }
 
 .hit {
   background-color: rgba(255, 34, 34, 0.7);
-  transition: all 0.3s;
 }
 
 .hit:hover {
@@ -134,7 +140,7 @@ header {
 .miss:hover {
   transform: scale(1) !important;
   box-shadow: 0 0 0.6rem white !important;
-  transition: all 0.3s;
+
   background-color: lightgray !important;
 }
 
@@ -157,6 +163,7 @@ header {
 .miss,
 .border {
   cursor: default !important;
+  transition: all 0.3s;
 }
 
 #subText {
@@ -165,16 +172,21 @@ header {
   padding: 0.5rem;
 }
 
-.reset {
+.btn {
   padding: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 500;
   border: none;
   background-color: #5ec576;
   cursor: pointer;
 }
 
-.reset:hover {
+.btn:hover {
   transform: scale(1.1);
+  transition: all 0.3s;
+}
+
+.hide {
+  display: none;
   transition: all 0.3s;
 }

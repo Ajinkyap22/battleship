@@ -113,6 +113,8 @@ class Gameboard {
       }
 
       for (let i = 0; i < ship.length; i++) {
+        if (!this.board[coords + i]) return false;
+
         // if a ship/border already exists at the coords
         if (this.board[coords + i].hasShip || !this.board[coords + i].isValid)
           return false;
@@ -125,6 +127,8 @@ class Gameboard {
       if (coords + (ship.length - 1) * 10 > this.board.length) return false;
 
       for (let i = 0; i < ship.length; i++) {
+        if (!this.board[coords + i * 10]) return false;
+
         if (
           this.board[coords + i * 10].hasShip ||
           !this.board[coords + i * 10].isValid
