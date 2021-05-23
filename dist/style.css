@@ -31,13 +31,13 @@ header {
   text-transform: capitalize;
 }
 
-/* need different hovers on missed, hit & untouched cells */
+/* need different hovers on missed, hit & untouched cells * - Done/ 
 /* Need animations for ship hits */
 /* Need Boards to shrinks & grow according to tunrs */
-/* Dark background, game font */
+/* Dark background, game font - Done */
 /* Modals for game over */
-/* Need to display whose tunr is it */
-/* Different colors for each board */
+/* Need to display whose turn is it */
+/* Different colors for each board - Done */
 /* Display ship data */
 /* How to play modal */
 
@@ -73,12 +73,8 @@ header {
 }
 
 .right {
-  background: radial-gradient(#000000, #0e3605, #33570d);
+  background: radial-gradient(#1d4a17, #1a570c, #33570d);
   border: 0.6rem solid limegreen;
-}
-
-.cell {
-  border: 1px solid black;
 }
 
 #leftCell {
@@ -87,7 +83,6 @@ header {
 }
 
 #leftCell:hover {
-  transform: scale(1.1);
   box-shadow: 0 0 0.6rem steelblue;
   transition: all 0.3s;
 }
@@ -95,11 +90,13 @@ header {
 #rightCell {
   border: 1px solid limegreen;
   box-shadow: 0 0 0.3rem limegreen;
+  cursor: pointer;
 }
 
 #rightCell:hover {
   transform: scale(1.1);
   box-shadow: 0 0 0.6rem limegreen;
+  background-color: rgba(0, 255, 0, 0.3);
   transition: all 0.3s;
 }
 
@@ -117,7 +114,13 @@ header {
 }
 
 .hit {
-  background-color: red;
+  background-color: rgba(255, 34, 34, 0.7);
+  transition: all 0.3s;
+}
+
+.hit:hover {
+  background-color: rgba(255, 34, 34, 0.7) !important;
+  transform: scale(1) !important;
 }
 
 .miss {
@@ -128,13 +131,32 @@ header {
   background-color: lightgray;
 }
 
+.miss:hover {
+  transform: scale(1) !important;
+  box-shadow: 0 0 0.6rem white !important;
+  transition: all 0.3s;
+  background-color: lightgray !important;
+}
+
 .border {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 0.4rem;
   background-color: lightgray;
-  opacity: 0.5;
+  opacity: 0.8;
+}
+
+.border:hover {
+  transform: scale(1) !important;
+  box-shadow: none !important;
+  background-color: lightgray !important;
+}
+
+.hit,
+.miss,
+.border {
+  cursor: default !important;
 }
 
 #subText {
