@@ -36,7 +36,7 @@ header {
 /* Need Boards to shrinks & grow according to tunrs - Done */
 /* Dark background, game font - Done */
 /* Modals for game over */
-/* Need to display whose turn is it */
+/* Need to display whose turn is it - Done */
 /* Different colors for each board - Done */
 /* Display ship data */
 /* How to play modal */
@@ -63,6 +63,7 @@ header {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
+  gap: 0.1rem;
   width: 450px;
   height: 100%;
   border-radius: 0.5rem;
@@ -113,15 +114,18 @@ header {
 .inactive {
   opacity: 0.3;
   transform: scale(0.9);
+  transition: transform 0.5s;
 }
 
 .turn {
   transform: scale(1);
-  transition: all 0.6s;
+  transition: transform 0.5s;
 }
 
 .hit {
   background-color: rgba(255, 34, 34, 0.7);
+  box-shadow: 0 0 0.6rem red !important;
+  border: 1px solid red !important;
 }
 
 .hit:hover {
@@ -140,7 +144,6 @@ header {
 .miss:hover {
   transform: scale(1) !important;
   box-shadow: 0 0 0.6rem white !important;
-
   background-color: lightgray !important;
 }
 
@@ -150,7 +153,7 @@ header {
   align-items: center;
   font-size: 0.4rem;
   background-color: lightgray;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 .border:hover {
@@ -172,6 +175,11 @@ header {
   padding: 0.5rem;
 }
 
+#current {
+  font-size: 1.5rem;
+  padding: 1rem;
+}
+
 .btn {
   padding: 0.5rem;
   font-size: 1.3rem;
@@ -186,7 +194,56 @@ header {
   transition: all 0.3s;
 }
 
+.game__over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  padding: 2rem;
+  border-radius: 5px;
+  box-shadow: 0 3rem 3rem rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: black;
+}
+
+.game__over > p {
+  font-size: 1.8rem;
+  padding-bottom: 0.5rem;
+}
+
+#result {
+  font-size: 1.3rem;
+  padding-bottom: 0.8rem;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 5;
+}
+
 .hide {
   display: none;
   transition: all 0.3s;
+}
+
+.close__modal {
+  position: absolute;
+  right: 0.4rem;
+  top: -0.4rem;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
 }

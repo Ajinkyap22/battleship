@@ -15,18 +15,28 @@
         <h1 id="title">BATTLESHIP</h1>
         <p>Prepare to engage in battle!</p>
       </header>
+      <div class="game__over hide">
+        <button class="close__modal">&Cross;</button>
+        <p>Game Over</p>
+        <label id="result"></label>
+        <button class="btn replay">Play Again</button>
+      </div>
       <div class="boards">
         <div class="grid">
           <div class="gameboard left inactive"></div>
           <p id="subText">Your Fleet</p>
         </div>
-        <button class="btn start">Start</button>
-        <button class="btn reset hide">Restart</button>
+        <div>
+          <p id="current">Let's Battle!</p>
+          <button class="btn start">Start</button>
+          <button class="btn reset hide">Restart</button>
+        </div>
         <div class="grid">
           <div class="gameboard right inactive"></div>
           <p id="subText">Enemy Fleet</p>
         </div>
       </div>
+      <div class="overlay hide"></div>
     </div>
 
     <script src="main.js"></script>

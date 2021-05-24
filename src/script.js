@@ -32,6 +32,14 @@ class Game {
     document
       .querySelector(".reset")
       .addEventListener("click", this.reset.bind(this));
+
+    document
+      .querySelector(".replay")
+      .addEventListener("click", this.playAgain.bind(this));
+
+    document
+      .querySelector(".close__modal")
+      .addEventListener("click", this.closeModal);
   }
 
   init() {
@@ -42,8 +50,8 @@ class Game {
     this._botBoard.init();
 
     // create 2 players - human & bot
-    this._player = new Player("Human", this._playerBoard);
-    this._bot = new Player("Bot", this._botBoard);
+    this._player = new Player("Player", this._playerBoard);
+    this._bot = new Player("CPU", this._botBoard);
 
     this.displayBoard(this._playerBoard, "left");
     this.displayBoard(this._botBoard, "right");
@@ -71,6 +79,8 @@ class Game {
 
     document.querySelector(".right").classList.remove("inactive");
     document.querySelector(".right").classList.add("turn");
+
+    document.querySelector("#current").textContent = "Player's Turn";
   }
 
   // method to create board on ui
@@ -125,23 +135,29 @@ class Game {
   }
 
   switchTurn(current) {
+    if (this._gameOver) return;
+
     document.querySelectorAll(".gameboard").forEach((board) => {
       board.classList.remove("inactive");
       board.classList.remove("turn");
     });
 
+    const turnText = document.querySelector("#current");
+
     if (current === 1) {
       this.turn = 2;
       document.querySelector(".right").classList.add("inactive");
       document.querySelector(".left").classList.add("turn");
+      turnText.textContent = "CPU's Turn";
 
       setTimeout(() => {
         this.botAttack(this._playerBoard, this._bot, "left");
-      }, 700);
+      }, 1000);
     } else {
       this.turn = 1;
       document.querySelector(".left").classList.add("inactive");
       document.querySelector(".right").classList.add("turn");
+      turnText.textContent = "Player's Turn";
     }
   }
 
@@ -161,7 +177,7 @@ class Game {
 
     this.markCell(board, cell, this.turn, rightBoard, player);
 
-    setTimeout(() => this.gameOver(board), 700);
+    setTimeout(() => this.gameOver(board, player), 1000);
   }
 
   botAttack(board, player, className) {
@@ -184,10 +200,12 @@ class Game {
 
     this.markCell(board, cell, this.turn, leftBoard, player);
 
-    setTimeout(() => this.gameOver(board), 700);
+    setTimeout(() => this.gameOver(board, player), 1000);
   }
 
   markCell(board, cell, turn, domBoard, player) {
+    if (this._gameOver) return;
+
     if (cell.classList.contains("ship")) {
       cell.classList.add("hit");
 
@@ -231,7 +249,7 @@ class Game {
   }
 
   // method to end game
-  gameOver(board) {
+  gameOver(board, player) {
     if (!board.allSunk) return;
 
     this._gameOver = true;
@@ -242,11 +260,14 @@ class Game {
       .forEach((board) => board.classList.add("inactive"));
 
     // alert gameover
-    alert("gameover");
+    document.querySelector(".game__over").classList.remove("hide");
+    document.querySelector(".overlay").classList.remove("hide");
+
+    document.querySelector("#result").textContent = `${player.type} Wins!`;
   }
 
   reset() {
-    this._gameOver = false;
+    this._gameOver = true;
     this.turn = 1;
 
     this._playerBoard.init();
@@ -259,9 +280,9 @@ class Game {
     this.displayShips(this._botBoard, "right");
     this.hideBotShips(this._botBoard, "right");
 
-    document
-      .querySelectorAll(".gameboard")
-      .forEach((board) => board.classList.remove("inactive"));
+    document.querySelector(".right").classList.remove("inactive");
+    document.querySelector(".left").classList.add("inactive");
+    document.querySelector(".right").classList.add("turn");
 
     this._botBoardContainer
       .querySelectorAll(".cell")
@@ -271,6 +292,18 @@ class Game {
           this.playerAttack.bind(this, this._botBoard, this._player)
         )
       );
+
+    setTimeout(() => (this._gameOver = false), 1000);
+  }
+
+  playAgain() {
+    this.closeModal();
+    this.reset();
+  }
+
+  closeModal() {
+    document.querySelector(".game__over").classList.add("hide");
+    document.querySelector(".overlay").classList.add("hide");
   }
 }
 
