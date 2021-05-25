@@ -35,12 +35,14 @@ header {
 /* Need animations for ship hits */
 /* Need Boards to shrinks & grow according to tunrs - Done */
 /* Dark background, game font - Done */
-/* Modals for game over */
+/* Modals for game over - Done */
 /* Need to display whose turn is it - Done */
 /* Different colors for each board - Done */
 /* Display ship data */
 /* How to play modal */
 /* Button to reset ships */
+/* Drag & Drop */
+/* Responsive */
 
 #title {
   letter-spacing: 0.2rem;
@@ -63,7 +65,7 @@ header {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  gap: 0.1rem;
+  gap: 0.2rem;
   width: 450px;
   height: 100%;
   border-radius: 0.5rem;
@@ -103,7 +105,7 @@ header {
 }
 
 .ship {
-  background-color: whitesmoke;
+  background-color: #3dd12e;
 }
 
 .hidden {
@@ -123,7 +125,7 @@ header {
 }
 
 .hit {
-  background-color: rgba(255, 34, 34, 0.7);
+  background-color: rgba(252, 38, 38, 0.8);
   box-shadow: 0 0 0.6rem red !important;
   border: 1px solid red !important;
 }
@@ -187,11 +189,16 @@ header {
   border: none;
   background-color: #5ec576;
   cursor: pointer;
+  outline: none;
 }
 
 .btn:hover {
   transform: scale(1.1);
   transition: all 0.3s;
+}
+
+.random {
+  font-size: 1.1rem;
 }
 
 .game__over {
