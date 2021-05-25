@@ -15,11 +15,38 @@
         <h1 id="title">BATTLESHIP</h1>
         <p>Prepare to engage in battle!</p>
       </header>
-      <div class="game__over hide">
+      <div class="modal game__over hide">
         <button class="close__modal">&Cross;</button>
         <p>Game Over</p>
         <label id="result"></label>
         <button class="btn replay">Play Again</button>
+      </div>
+      <div class="modal how__to hide">
+        <button class="close__modal">&Cross;</button>
+        <p id="story">
+          Our planet is attacked by aliens & is in grave danger. You are our
+          only hope for survival. You must destroy the enemy's fleet before
+          their super-smart CPU destroys your fleet.
+        </p>
+        <ul class="rules">
+          <li id="rule">
+            Click on one of the coordinates on the enemy fleet to attack.
+          </li>
+          <li id="rule">
+            If it hits you'll get another turn, if it misses it will be the
+            CPU's turn.
+          </li>
+          <li id="rule">Red - Ship is hit</li>
+          <li id="rule">White - Attack missed</li>
+          <li id="rule">Grey - Ship border which you cannot hit</li>
+          <li id="rule">
+            Randomize - Before the battle you can re-organize you fleet.
+          </li>
+          <li id="rule">
+            Whoever destroy's all of enemy ships first, wins the battle.
+          </li>
+        </ul>
+        <button class="btn got__it">Got it</button>
       </div>
       <div class="boards">
         <div class="grid">
@@ -27,10 +54,11 @@
           <p id="subText">Your Fleet</p>
           <button class="btn random">Randomize</button>
         </div>
-        <div>
+        <div class="middle">
           <p id="current">Let's Battle!</p>
           <button class="btn start">Start</button>
           <button class="btn reset hide">Restart</button>
+          <button class="btn how">How To Play</button>
         </div>
         <div class="grid">
           <div class="gameboard right inactive"></div>

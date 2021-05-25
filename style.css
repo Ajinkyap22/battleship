@@ -32,17 +32,18 @@ header {
 }
 
 /* need different hovers on missed, hit & untouched cells * - Done/ 
-/* Need animations for ship hits */
 /* Need Boards to shrinks & grow according to tunrs - Done */
 /* Dark background, game font - Done */
 /* Modals for game over - Done */
 /* Need to display whose turn is it - Done */
 /* Different colors for each board - Done */
+/* Button to reset ships - Done */
+/* Need animations for ship hits */
+/* How to play modal - Done */
 /* Display ship data */
-/* How to play modal */
-/* Button to reset ships */
 /* Drag & Drop */
 /* Responsive */
+/* Modal styling */
 
 #title {
   letter-spacing: 0.2rem;
@@ -79,6 +80,17 @@ header {
 .right {
   background: radial-gradient(#1d4a17, #1a570c, #33570d);
   border: 0.6rem solid limegreen;
+}
+
+.middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.middle > * {
+  margin: 0.5rem;
 }
 
 #leftCell {
@@ -122,6 +134,7 @@ header {
 .turn {
   transform: scale(1);
   transition: transform 0.5s;
+  opacity: 1;
 }
 
 .hit {
@@ -140,7 +153,7 @@ header {
   justify-content: center;
   align-items: center;
   font-size: 0.4rem;
-  background-color: lightgray;
+  background-color: #f3f3f3;
 }
 
 .miss:hover {
@@ -179,7 +192,6 @@ header {
 
 #current {
   font-size: 1.5rem;
-  padding: 1rem;
 }
 
 .btn {
@@ -201,7 +213,7 @@ header {
   font-size: 1.1rem;
 }
 
-.game__over {
+.modal {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -226,6 +238,23 @@ header {
 #result {
   font-size: 1.3rem;
   padding-bottom: 0.8rem;
+}
+
+.how__to {
+  width: 40%;
+  padding: 3rem;
+}
+
+#story {
+  font-size: 1.2rem;
+  padding-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.rules {
+  text-align: justify;
+  font-size: 1.1rem;
+  padding-top: 0.5rem;
 }
 
 .overlay {
