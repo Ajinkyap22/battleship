@@ -1,16 +1,6 @@
 import Gameboard from "./Components/gameboard";
 import Player from "./Components/player";
 
-// TODO - UI
-
-// Doing -
-
-// Done - Ship tests, Gameboard tests, Player tests, AI tests, Game codes
-
-// Not Sure/ Review
-
-// Game - UI, Create players & boards - predetermined corrds, gameOver(), userInput
-
 class Game {
   _player;
   _playerBoard;
@@ -38,8 +28,8 @@ class Game {
       .addEventListener("click", this.playAgain.bind(this));
 
     document
-      .querySelector(".close__modal")
-      .addEventListener("click", this.closeModal);
+      .querySelectorAll(".close__modal")
+      .forEach((cross) => cross.addEventListener("click", this.closeModal));
 
     document
       .querySelector(".random")
@@ -47,6 +37,14 @@ class Game {
         "click",
         this.deployFleet.bind(this, this._playerBoard, "left")
       );
+
+    document
+      .querySelector(".how")
+      .addEventListener("click", this.showModal.bind(this, "how__to"));
+
+    document
+      .querySelector(".got__it")
+      .addEventListener("click", this.closeModal);
   }
 
   init() {
@@ -179,6 +177,7 @@ class Game {
       this.turn = 1;
       this._playerBoardContainer.classList.add("inactive");
       this._botBoardContainer.classList.add("turn");
+
       turnText.textContent = "Player's Turn";
     }
   }
@@ -280,8 +279,7 @@ class Game {
       .forEach((board) => board.classList.add("inactive"));
 
     // alert gameover
-    document.querySelector(".game__over").classList.remove("hide");
-    document.querySelector(".overlay").classList.remove("hide");
+    this.showModal("game__over");
 
     document.querySelector("#result").textContent = `${player.type} Wins!`;
   }
@@ -321,8 +319,15 @@ class Game {
     this.init();
   }
 
+  showModal(classname) {
+    document.querySelector(`.${classname}`).classList.remove("hide");
+    document.querySelector(".overlay").classList.remove("hide");
+  }
+
   closeModal() {
-    document.querySelector(".game__over").classList.add("hide");
+    document
+      .querySelectorAll(".modal")
+      .forEach((modal) => modal.classList.add("hide"));
     document.querySelector(".overlay").classList.add("hide");
   }
 }
