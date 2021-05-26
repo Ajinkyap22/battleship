@@ -38,8 +38,8 @@ header {
 /* Need to display whose turn is it - Done */
 /* Different colors for each board - Done */
 /* Button to reset ships - Done */
-/* Need animations for ship hits */
 /* How to play modal - Done */
+/* Need animations for ship hits */
 /* Display ship data */
 /* Drag & Drop */
 /* Responsive */
@@ -209,7 +209,8 @@ header {
   transition: all 0.3s;
 }
 
-.random {
+.random,
+.rearrange {
   font-size: 1.1rem;
 }
 
@@ -249,6 +250,10 @@ header {
   font-size: 1.2rem;
   padding-bottom: 0.5rem;
   font-weight: 600;
+}
+
+#rule {
+  padding: 0.2rem;
 }
 
 .rules {

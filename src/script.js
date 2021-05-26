@@ -1,6 +1,19 @@
 import Gameboard from "./Components/gameboard";
 import Player from "./Components/player";
 
+// Place draggable ships
+// Set cursor - move on them
+// Select all the draggables
+// Add dragStart event handler
+// Add a dragging class on the dragged element
+// Add a dragend event handler
+// remove the dragging class
+// Add a dragover event handler on the board
+// get the dragging element & append it to the dragover element
+// Add preventDefault() to allow dropping
+// while on the board, get the closes cells by using ClientX & ClientY to decide where to append the ship
+// use insertBefore, getBoundingClientRect(), reduce etc. to get the cells
+
 class Game {
   _player;
   _playerBoard;
@@ -45,6 +58,10 @@ class Game {
     document
       .querySelector(".got__it")
       .addEventListener("click", this.closeModal);
+
+    document
+      .querySelector(".rearrange")
+      .addEventListener("click", this.rearrange.bind(this));
   }
 
   init() {
@@ -284,36 +301,6 @@ class Game {
     document.querySelector("#result").textContent = `${player.type} Wins!`;
   }
 
-  // reset() {
-  //   this._gameOver = true;
-  //   this.turn = 1;
-
-  //   this._playerBoard.init();
-  //   this._botBoard.init();
-
-  //   this.displayBoard(this._playerBoard, "left");
-  //   this.displayBoard(this._botBoard, "right");
-
-  //   this.displayShips(this._playerBoard, "left");
-  //   this.displayShips(this._botBoard, "right");
-  //   this.hideBotShips(this._botBoard, "right");
-
-  //   document.querySelector(".right").classList.remove("inactive");
-  //   this._playerBoardContainer.classList.add("inactive");
-  //   document.querySelector(".right").classList.add("turn");
-
-  //   this._botBoardContainer
-  //     .querySelectorAll(".cell")
-  //     .forEach((cell) =>
-  //       cell.addEventListener(
-  //         "click",
-  //         this.playerAttack.bind(this, this._botBoard, this._player)
-  //       )
-  //     );
-
-  //   setTimeout(() => (this._gameOver = false), 1000);
-  // }
-
   playAgain() {
     this.closeModal();
     this.init();
@@ -329,6 +316,19 @@ class Game {
       .querySelectorAll(".modal")
       .forEach((modal) => modal.classList.add("hide"));
     document.querySelector(".overlay").classList.add("hide");
+  }
+
+  rearrange(e) {
+    // Hide bot board
+    document.querySelector(".bot__grid").classList.add("hide");
+    // hide start & how to play buttom
+    document.querySelector(".how").classList.add("hide");
+    document.querySelector(".start").classList.add("hide");
+    // Hide turn text
+    document.querySelector("#current").classList.add("hide");
+    // hide rearrange button but keep randomise
+    e.target.classList.add("hide");
+    // display the ships to place
   }
 }
 
