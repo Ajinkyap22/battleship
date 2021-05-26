@@ -39,8 +39,9 @@
           <li id="rule">Red - Ship is hit</li>
           <li id="rule">White - Attack missed</li>
           <li id="rule">Grey - Ship border which you cannot hit</li>
+          <li id="rule">Green - Your Ship</li>
           <li id="rule">
-            Randomize - Before the battle you can re-organize you fleet.
+            Randomise - Before the battle you can re-organize you fleet.
           </li>
           <li id="rule">
             Whoever destroy's all of enemy ships first, wins the battle.
@@ -52,7 +53,8 @@
         <div class="grid">
           <div class="gameboard left"></div>
           <p id="subText">Your Fleet</p>
-          <button class="btn random">Randomize</button>
+          <button class="btn rearrange">Rearrange</button>
+          <button class="btn random">Randomise</button>
         </div>
         <div class="middle">
           <p id="current">Let's Battle!</p>
@@ -60,10 +62,11 @@
           <button class="btn reset hide">Restart</button>
           <button class="btn how">How To Play</button>
         </div>
-        <div class="grid">
+        <div class="grid bot__grid">
           <div class="gameboard right inactive"></div>
           <p id="subText">Enemy Fleet</p>
         </div>
+        <div class="fleet"></div>
       </div>
       <div class="overlay hide"></div>
     </div>
