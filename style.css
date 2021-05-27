@@ -262,6 +262,42 @@ header {
   padding-top: 0.5rem;
 }
 
+.fleet {
+  height: 100%;
+  width: 12rem;
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.fleet__ship {
+  background-color: #3dd12e;
+  border: 1px solid steelblue;
+  height: 2.5rem;
+}
+
+.one {
+  flex-basis: 2.5rem;
+}
+
+.two {
+  flex-basis: 5rem;
+}
+
+.three {
+  flex-basis: 7.5rem;
+}
+
+.four {
+  flex-basis: 10rem;
+}
+
+/* .fleet__cell {
+  background-color: black;
+  border: 1px solid steelblue;
+} */
+
 .overlay {
   position: absolute;
   top: 0;
