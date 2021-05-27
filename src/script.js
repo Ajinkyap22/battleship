@@ -328,7 +328,32 @@ class Game {
     document.querySelector("#current").classList.add("hide");
     // hide rearrange button but keep randomise
     e.target.classList.add("hide");
+    // board should be empty
+    this._playerBoard.init();
+    this.displayBoard(this._playerBoard, "left");
+    // Show fleet
+    document.querySelector(".fleet").classList.remove("hide");
     // display the ships to place
+    // this.displayFleet();
+  }
+
+  displayFleet() {
+    this._playerBoard.createShips();
+    this._playerBoard.ships.forEach((ship) => {
+      const shipDiv = document.createElement("div");
+      shipDiv.setAttribute("class", "fleet__ship");
+      this.appendShip(ship, shipDiv);
+      shipDiv.style.gridTemplateColumns = `repeat(${ship.length}, 1fr)`;
+      document.querySelector(".fleet").appendChild(shipDiv);
+    });
+  }
+
+  appendShip(ship, parent) {
+    for (let i = 0; i < ship.length; i++) {
+      const cell = document.createElement("div");
+      cell.setAttribute("class", "fleet__cell");
+      parent.appendChild(cell);
+    }
   }
 }
 
