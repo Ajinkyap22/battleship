@@ -266,37 +266,41 @@ header {
   height: 100%;
   width: 12rem;
   display: flex;
-  flex-direction: row-reverse;
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
 
 .fleet__ship {
-  background-color: #3dd12e;
-  border: 1px solid steelblue;
   height: 2.5rem;
+  display: flex;
+  cursor: move;
 }
 
-.one {
-  flex-basis: 2.5rem;
+#ship__1 {
+  flex-basis: 2.6rem;
 }
 
-.two {
-  flex-basis: 5rem;
+#ship__2 {
+  flex-basis: 5.2rem;
 }
 
-.three {
-  flex-basis: 7.5rem;
+#ship__3 {
+  flex-basis: 7.9rem;
 }
 
-.four {
-  flex-basis: 10rem;
+#ship__4 {
+  flex-basis: 10.6rem;
 }
 
-/* .fleet__cell {
-  background-color: black;
-  border: 1px solid steelblue;
-} */
+.fleet__cell {
+  border: 2px solid steelblue;
+  background-color: #3dd12e;
+  flex-basis: 2.6rem;
+}
+
+.dragging {
+  opacity: 0.5;
+}
 
 .overlay {
   position: absolute;
