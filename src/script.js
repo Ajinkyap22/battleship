@@ -1,15 +1,16 @@
 import Gameboard from "./Components/gameboard";
 import Player from "./Components/player";
+import Ship from "./Components/ship";
 
-// Place draggable ships
-// Set cursor - move on them
-// Select all the draggables
-// Add dragStart event handler
-// Add a dragging class on the dragged element
-// Add a dragend event handler
-// remove the dragging class
-// Add a dragover event handler on the board
-// get the dragging element & append it to the dragover element
+// Place draggable ships - Done
+// Set cursor - move on them  - Done
+// Select all the draggables - Done
+// Add dragStart event handler - Done
+// Add a dragging class on the dragged element - Done
+// Add a dragend event handler - Done
+// remove the dragging class - Done
+// Add a dragover event handler on the board - Done
+// get the dragover cell & place the ship there & then render it
 // Add preventDefault() to allow dropping
 // while on the board, get the closes cells by using ClientX & ClientY to decide where to append the ship
 // use insertBefore, getBoundingClientRect(), reduce etc. to get the cells
@@ -21,6 +22,7 @@ class Game {
   _botBoard;
   _gameOver;
   _botBoardContainer;
+  _draggables;
 
   constructor() {
     this._botBoardContainer = document.querySelector(".right");
@@ -62,6 +64,10 @@ class Game {
     document
       .querySelector(".rearrange")
       .addEventListener("click", this.rearrange.bind(this));
+
+    this._playerBoardContainer.querySelectorAll(".cell").forEach((cell) => {
+      cell.addEventListener("dragover", this.dropShip.bind(this));
+    });
   }
 
   init() {
@@ -334,26 +340,56 @@ class Game {
     // Show fleet
     document.querySelector(".fleet").classList.remove("hide");
     // display the ships to place
-    // this.displayFleet();
+    this.displayFleet();
   }
 
   displayFleet() {
     this._playerBoard.createShips();
-    this._playerBoard.ships.forEach((ship) => {
+
+    this._playerBoard.ships.forEach((ship, i) => {
       const shipDiv = document.createElement("div");
+
       shipDiv.setAttribute("class", "fleet__ship");
+      shipDiv.setAttribute("id", `ship__${ship.length}`);
+      shipDiv.setAttribute("draggable", true);
+      shipDiv.setAttribute("data-index", i);
+
       this.appendShip(ship, shipDiv);
-      shipDiv.style.gridTemplateColumns = `repeat(${ship.length}, 1fr)`;
+
       document.querySelector(".fleet").appendChild(shipDiv);
+    });
+
+    this._draggables = document.querySelectorAll(".fleet__ship");
+
+    this._draggables.forEach((draggable) => {
+      draggable.addEventListener("dragstart", () => {
+        draggable.classList.add("dragging");
+      });
+
+      draggable.addEventListener("dragend", () => {
+        draggable.classList.remove("dragging");
+      });
     });
   }
 
   appendShip(ship, parent) {
     for (let i = 0; i < ship.length; i++) {
       const cell = document.createElement("div");
+
       cell.setAttribute("class", "fleet__cell");
+
       parent.appendChild(cell);
     }
+  }
+
+  dropShip(e) {
+    e.preventDefault();
+    console.log("nice");
+    const coords = e.target.dataset.index;
+    const draggable = document.querySelector(".dragging");
+    const ship = this._playerBoard.ships[draggable.dataset.index];
+
+    this._playerBoard.paceShip(ship, coords);
   }
 }
 
