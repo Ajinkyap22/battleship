@@ -15,6 +15,8 @@ class Gameboard {
     for (let i = 0; i < this.size; i++) {
       this.board.push({ hasShip: false, isHit: false, isValid: true });
     }
+
+    this.allPlaced = false;
   }
 
   // ship methods

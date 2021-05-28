@@ -30,22 +30,27 @@ class Game {
 
     this.init();
 
+    // Start game
     document
       .querySelector(".start")
       .addEventListener("click", this.start.bind(this));
 
+    // Restart game
     document
       .querySelector(".reset")
       .addEventListener("click", this.init.bind(this));
 
+    // Play again
     document
       .querySelector(".replay")
       .addEventListener("click", this.playAgain.bind(this));
 
+    // Close modal
     document
       .querySelectorAll(".close__modal")
       .forEach((cross) => cross.addEventListener("click", this.closeModal));
 
+    // randomise
     document
       .querySelector(".random")
       .addEventListener(
@@ -53,21 +58,20 @@ class Game {
         this.deployFleet.bind(this, this._playerBoard, "left")
       );
 
+    // open how to play modal
     document
       .querySelector(".how")
       .addEventListener("click", this.showModal.bind(this, "how__to"));
 
+    // close how to play modal
     document
       .querySelector(".got__it")
       .addEventListener("click", this.closeModal);
 
+    // rearrange ships
     document
       .querySelector(".rearrange")
       .addEventListener("click", this.rearrange.bind(this));
-
-    this._playerBoardContainer.querySelectorAll(".cell").forEach((cell) => {
-      cell.addEventListener("dragover", this.dropShip.bind(this));
-    });
   }
 
   init() {
@@ -150,20 +154,22 @@ class Game {
     // place them
     board.placeShipsRandomly();
     // add ship class to all ships
-    this.renderShips(board, className);
+    this.renderAllShips(board, className);
   }
 
-  renderShips(board, className) {
+  renderAllShips(board, className) {
     const grid = document.querySelector(`.${className}`);
     const cells = grid.querySelectorAll(".cell");
 
     cells.forEach((cell) => cell.classList.remove("ship"));
 
     for (let i = 0; i < board.size; i++) {
-      if (board.board[i].hasShip) {
-        cells[i].classList.add("ship");
-      }
+      this.renderShip(i, cells, board);
     }
+  }
+
+  renderShip(coord, cells, board) {
+    if (board.board[coord].hasShip) cells[coord].classList.add("ship");
   }
 
   hideBotShips(board, className) {
@@ -344,6 +350,7 @@ class Game {
   }
 
   displayFleet() {
+    this._playerBoard.init();
     this._playerBoard.createShips();
 
     this._playerBoard.ships.forEach((ship, i) => {
@@ -361,14 +368,12 @@ class Game {
 
     this._draggables = document.querySelectorAll(".fleet__ship");
 
-    this._draggables.forEach((draggable) => {
-      draggable.addEventListener("dragstart", () => {
-        draggable.classList.add("dragging");
-      });
+    this.dragStart();
+    this.dragEnd();
 
-      draggable.addEventListener("dragend", () => {
-        draggable.classList.remove("dragging");
-      });
+    document.querySelectorAll("#leftCell").forEach((cell) => {
+      cell.addEventListener("dragover", (e) => e.preventDefault());
+      cell.addEventListener("drop", this.dropShip.bind(this));
     });
   }
 
@@ -382,14 +387,39 @@ class Game {
     }
   }
 
+  dragStart() {
+    this._draggables.forEach((draggable) => {
+      draggable.addEventListener("dragstart", () => {
+        draggable.classList.add("dragging");
+      });
+    });
+  }
+
+  dragEnd() {
+    this._draggables.forEach((draggable) => {
+      draggable.addEventListener("dragend", () => {
+        draggable.classList.remove("dragging");
+      });
+    });
+  }
+
   dropShip(e) {
     e.preventDefault();
-    console.log("nice");
-    const coords = e.target.dataset.index;
-    const draggable = document.querySelector(".dragging");
-    const ship = this._playerBoard.ships[draggable.dataset.index];
 
-    this._playerBoard.paceShip(ship, coords);
+    // get the index of the cell
+    const coords = +e.target.dataset.index;
+    // get the dragged ship from dom
+    const draggable = document.querySelector(".dragging");
+    // get the ship from the board
+    const ship = this._playerBoard.ships[draggable.dataset.index];
+    // get all the cells
+    const cells = document.querySelectorAll("#leftCell");
+    // place the ship on board
+    this._playerBoard.placeShip(ship, coords);
+
+    for (let i = 0; i < ship.length; i++) {
+      this.renderShip(i + coords, cells, this._playerBoard);
+    }
   }
 }
 
