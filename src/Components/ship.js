@@ -5,6 +5,7 @@ class Ship {
     this.cells = [];
     this.adjCoords = [];
     this.positions = Array(this.length).fill(0);
+    this.placed = false;
   }
 
   hit(pos) {

@@ -68,6 +68,11 @@ class Game {
       .querySelector(".got__it")
       .addEventListener("click", this.closeModal);
 
+    // clear player board
+    document
+      .querySelector(".clear")
+      .addEventListener("click", this.displayFleet.bind(this));
+
     // rearrange ships
     document
       .querySelector(".rearrange")
@@ -111,6 +116,8 @@ class Game {
     board.init();
     this.displayBoard(board, classname);
     this.displayShips(board, classname);
+    // in case we are on the rearrange page
+    this.toggleClasses();
   }
 
   start() {
@@ -330,28 +337,35 @@ class Game {
     document.querySelector(".overlay").classList.add("hide");
   }
 
+  toggleClasses() {
+    // Fleet
+    document.querySelector(".fleet").classList.toggle("hide");
+    // bot board
+    document.querySelector(".bot__grid").classList.toggle("hide");
+    // start button
+    document.querySelector(".start").classList.toggle("hide");
+    // how to play button
+    document.querySelector(".how").classList.toggle("hide");
+    // rearrange button
+    document.querySelector(".rearrange").classList.toggle("hide");
+    // clear button
+    document.querySelector(".clear").classList.toggle("hide");
+  }
+
   rearrange(e) {
-    // Hide bot board
-    document.querySelector(".bot__grid").classList.add("hide");
-    // hide start & how to play buttom
-    document.querySelector(".how").classList.add("hide");
-    document.querySelector(".start").classList.add("hide");
-    // Hide turn text
-    document.querySelector("#current").classList.add("hide");
-    // hide rearrange button but keep randomise
-    e.target.classList.add("hide");
-    // board should be empty
-    this._playerBoard.init();
-    this.displayBoard(this._playerBoard, "left");
-    // Show fleet
-    document.querySelector(".fleet").classList.remove("hide");
+    this.toggleClasses();
     // display the ships to place
     this.displayFleet();
   }
 
   displayFleet() {
+    const fleet = document.querySelector(".fleet");
+
     this._playerBoard.init();
     this._playerBoard.createShips();
+    fleet.innerHTML = "";
+
+    this.displayBoard(this._playerBoard, "left");
 
     this._playerBoard.ships.forEach((ship, i) => {
       const shipDiv = document.createElement("div");
@@ -363,7 +377,7 @@ class Game {
 
       this.appendShip(ship, shipDiv);
 
-      document.querySelector(".fleet").appendChild(shipDiv);
+      fleet.appendChild(shipDiv);
     });
 
     this._draggables = document.querySelectorAll(".fleet__ship");
@@ -405,7 +419,6 @@ class Game {
 
   dropShip(e) {
     e.preventDefault();
-
     // get the index of the cell
     const coords = +e.target.dataset.index;
     // get the dragged ship from dom
@@ -414,12 +427,23 @@ class Game {
     const ship = this._playerBoard.ships[draggable.dataset.index];
     // get all the cells
     const cells = document.querySelectorAll("#leftCell");
+
     // place the ship on board
-    this._playerBoard.placeShip(ship, coords);
+    if (this._playerBoard.validateCoords(ship, coords) && draggable.draggable)
+      this._playerBoard.placeShip(ship, coords);
+    else return;
 
     for (let i = 0; i < ship.length; i++) {
       this.renderShip(i + coords, cells, this._playerBoard);
     }
+    // Remove the dragged ship from the fleet
+    draggable.childNodes.forEach((node) => node.classList.add("placed"));
+    draggable.classList.add("placed");
+    // check if all ships are placed
+    this._playerBoard.areAllPlaced();
+    if (this._playerBoard.allPlaced) this.toggleClasses();
+    // remove the ships draggable property
+    draggable.setAttribute("draggable", false);
   }
 }
 

@@ -50,6 +50,7 @@ class Gameboard {
 
     this.markAsInvalid(ship, coords, axis);
     ship.cells.push(...cells);
+    ship.placed = true;
 
     // for testing
     if (this.ships.length < 10) this.ships.push(ship);
@@ -69,13 +70,17 @@ class Gameboard {
   placeShipsRandomly() {
     this.ships.forEach((ship) => this.autoPlace(ship));
 
-    this.allPlaced = true;
+    this.areAllPlaced();
   }
 
   generateRandomCoords() {
     const coords = Math.floor(Math.random() * this.size);
     const axis = Math.floor(Math.random() * 2) ? "x" : "y";
     return [coords, axis];
+  }
+
+  areAllPlaced() {
+    this.allPlaced = this.ships.every((ship) => ship.placed);
   }
 
   receiveAttack(coords) {
@@ -104,7 +109,7 @@ class Gameboard {
   }
 
   // error handling
-  validateCoords(ship, coords, axis) {
+  validateCoords(ship, coords, axis = "x") {
     if (coords > this.board.length || ship.length > this.board.length) {
       return false;
     }

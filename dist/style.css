@@ -210,7 +210,8 @@ header {
 }
 
 .random,
-.rearrange {
+.rearrange,
+.clear {
   font-size: 1.1rem;
 }
 
@@ -296,6 +297,12 @@ header {
   border: 2px solid steelblue;
   background-color: #3dd12e;
   flex-basis: 2.6rem;
+}
+
+.placed {
+  background-color: transparent;
+  border: 1px solid grey;
+  cursor: no-drop;
 }
 
 .dragging {
