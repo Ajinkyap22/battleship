@@ -346,8 +346,10 @@ class Game {
     document.querySelector(".rearrange").classList.toggle("hide");
     // clear button
     document.querySelector(".clear").classList.toggle("hide");
-    // hide axis button
+    // axis button
     document.querySelector(".axis").classList.toggle("hide");
+    // note
+    document.querySelector("#note").classList.toggle("hide");
   }
 
   rearrange(e) {
@@ -362,12 +364,11 @@ class Game {
 
   displayFleet() {
     const fleet = document.querySelector(".fleet");
+    this._axis = "x";
 
     this._playerBoard.init();
     this._playerBoard.createShips();
     fleet.innerHTML = "";
-
-    this._axis = "x";
 
     fleet.classList.remove("vertical");
     fleet.classList.add("horrizontal");
@@ -396,6 +397,21 @@ class Game {
 
     document.querySelectorAll("#leftCell").forEach((cell) => {
       cell.addEventListener("dragover", (e) => e.preventDefault());
+
+      cell.addEventListener("dragenter", (e) => {
+        const dragging = document.querySelector(".dragging");
+        const ship = this._playerBoard.ships[dragging.dataset.index];
+
+        if (this._playerBoard.validateCoords(ship, +e.target.dataset.index))
+          e.target.classList.add("valid");
+        else e.target.classList.add("invalid");
+      });
+
+      cell.addEventListener("dragleave", (e) => {
+        e.target.classList.remove("valid");
+        e.target.classList.remove("invalid");
+      });
+
       cell.addEventListener("drop", this.dropShip.bind(this));
     });
   }
@@ -412,7 +428,7 @@ class Game {
 
   dragStart() {
     this._draggables.forEach((draggable) => {
-      draggable.addEventListener("dragstart", () => {
+      draggable.addEventListener("dragstart", (e) => {
         draggable.classList.add("dragging");
       });
     });
@@ -437,10 +453,11 @@ class Game {
     // get all the cells
     const cells = document.querySelectorAll("#leftCell");
 
-    // place the ship on board
-    if (this._playerBoard.validateCoords(ship, coords) && draggable.draggable)
-      this._playerBoard.placeShip(ship, coords, this._axis);
-    else return;
+    // check if its a valid coord & place the ship on board
+    if (!this._playerBoard.validateCoords(ship, coords) || !draggable.draggable)
+      return;
+
+    this._playerBoard.placeShip(ship, coords, this._axis);
 
     if (this._axis === "x") {
       for (let i = 0; i < ship.length; i++) {

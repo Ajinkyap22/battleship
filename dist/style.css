@@ -80,6 +80,7 @@ header {
 .right {
   background: radial-gradient(#1d4a17, #1a570c, #33570d);
   border: 0.6rem solid limegreen;
+  order: 3;
 }
 
 .middle {
@@ -87,10 +88,15 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  order: 1;
 }
 
 .middle > * {
   margin: 0.5rem;
+}
+
+.bot__grid {
+  order: 2;
 }
 
 #leftCell {
@@ -194,6 +200,10 @@ header {
   font-size: 1.5rem;
 }
 
+#note {
+  font-size: 0.9rem;
+}
+
 .btn {
   padding: 0.5rem;
   font-size: 1.3rem;
@@ -267,6 +277,7 @@ header {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
+  padding-top: 1rem;
 }
 
 .horrizontal {
@@ -278,7 +289,7 @@ header {
 .vertical {
   width: 10rem;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .fleet__ship {
@@ -326,6 +337,14 @@ header {
 
 .dragging {
   opacity: 0.5;
+}
+
+.valid {
+  border: 2px solid limegreen !important;
+}
+
+.invalid {
+  border: 2px solid red !important;
 }
 
 .overlay {
