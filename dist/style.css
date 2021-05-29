@@ -265,16 +265,35 @@ header {
 
 .fleet {
   height: 100%;
-  width: 12rem;
   display: flex;
   flex-wrap: wrap;
+}
+
+.horrizontal {
+  width: 12rem;
+  flex-direction: row;
   justify-content: space-evenly;
 }
 
+.vertical {
+  width: 10rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .fleet__ship {
-  height: 2.5rem;
   display: flex;
   cursor: move;
+}
+
+.x__axis {
+  height: 2.5rem;
+  flex-direction: row;
+}
+
+.y__axis {
+  flex-direction: column;
+  margin: 0.375rem;
 }
 
 #ship__1 {

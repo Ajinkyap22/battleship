@@ -1,19 +1,7 @@
 import Gameboard from "./Components/gameboard";
 import Player from "./Components/player";
-import Ship from "./Components/ship";
 
-// Place draggable ships - Done
-// Set cursor - move on them  - Done
-// Select all the draggables - Done
-// Add dragStart event handler - Done
-// Add a dragging class on the dragged element - Done
-// Add a dragend event handler - Done
-// remove the dragging class - Done
-// Add a dragover event handler on the board - Done
-// get the dragover cell & place the ship there & then render it
-// Add preventDefault() to allow dropping
-// while on the board, get the closes cells by using ClientX & ClientY to decide where to append the ship
-// use insertBefore, getBoundingClientRect(), reduce etc. to get the cells
+// need to show invalid & valid coords to place ship while hovering over them
 
 class Game {
   _player;
@@ -23,10 +11,13 @@ class Game {
   _gameOver;
   _botBoardContainer;
   _draggables;
+  _axis;
 
   constructor() {
     this._botBoardContainer = document.querySelector(".right");
     this._playerBoardContainer = document.querySelector(".left");
+
+    this._axis = "x";
 
     this.init();
 
@@ -77,6 +68,11 @@ class Game {
     document
       .querySelector(".rearrange")
       .addEventListener("click", this.rearrange.bind(this));
+
+    // change axis
+    document
+      .querySelector(".axis")
+      .addEventListener("click", this.toggleAxis.bind(this));
   }
 
   init() {
@@ -350,12 +346,18 @@ class Game {
     document.querySelector(".rearrange").classList.toggle("hide");
     // clear button
     document.querySelector(".clear").classList.toggle("hide");
+    // hide axis button
+    document.querySelector(".axis").classList.toggle("hide");
   }
 
   rearrange(e) {
     this.toggleClasses();
     // display the ships to place
     this.displayFleet();
+    // change text
+    document.querySelector("#current").textContent = "Drag & Drop";
+    // show axis button
+    document.querySelector(".axis").classList.remove("hide");
   }
 
   displayFleet() {
@@ -365,12 +367,19 @@ class Game {
     this._playerBoard.createShips();
     fleet.innerHTML = "";
 
+    this._axis = "x";
+
+    fleet.classList.remove("vertical");
+    fleet.classList.add("horrizontal");
+
+    document.querySelector(".axis").textContent = "Axis : X";
+
     this.displayBoard(this._playerBoard, "left");
 
     this._playerBoard.ships.forEach((ship, i) => {
       const shipDiv = document.createElement("div");
 
-      shipDiv.setAttribute("class", "fleet__ship");
+      shipDiv.setAttribute("class", "fleet__ship x__axis");
       shipDiv.setAttribute("id", `ship__${ship.length}`);
       shipDiv.setAttribute("draggable", true);
       shipDiv.setAttribute("data-index", i);
@@ -430,12 +439,19 @@ class Game {
 
     // place the ship on board
     if (this._playerBoard.validateCoords(ship, coords) && draggable.draggable)
-      this._playerBoard.placeShip(ship, coords);
+      this._playerBoard.placeShip(ship, coords, this._axis);
     else return;
 
-    for (let i = 0; i < ship.length; i++) {
-      this.renderShip(i + coords, cells, this._playerBoard);
+    if (this._axis === "x") {
+      for (let i = 0; i < ship.length; i++) {
+        this.renderShip(coords + i, cells, this._playerBoard);
+      }
+    } else {
+      for (let i = 0; i < ship.length; i++) {
+        this.renderShip(coords + i * 10, cells, this._playerBoard);
+      }
     }
+
     // Remove the dragged ship from the fleet
     draggable.childNodes.forEach((node) => node.classList.add("placed"));
     draggable.classList.add("placed");
@@ -444,6 +460,34 @@ class Game {
     if (this._playerBoard.allPlaced) this.toggleClasses();
     // remove the ships draggable property
     draggable.setAttribute("draggable", false);
+  }
+
+  toggleAxis(e) {
+    if (this._axis === "x") {
+      // change axis
+      this._axis = "y";
+      // change text
+      e.target.textContent = "Axis : Y";
+      // chnage classes for fleet
+      document.querySelector(".fleet").classList.remove("horrizontal");
+      document.querySelector(".fleet").classList.add("vertical");
+      // change classes for ships
+      document.querySelectorAll(".fleet__ship").forEach((ship) => {
+        ship.classList.remove("x__axis");
+        ship.classList.add("y__axis");
+      });
+    } else {
+      this._axis = "x";
+      e.target.textContent = "Axis : X";
+
+      document.querySelector(".fleet").classList.remove("vertical");
+      document.querySelector(".fleet").classList.add("horrizontal");
+
+      document.querySelectorAll(".fleet__ship").forEach((ship) => {
+        ship.classList.remove("y__axis");
+        ship.classList.add("x__axis");
+      });
+    }
   }
 }
 
