@@ -1,8 +1,6 @@
 import Gameboard from "./Components/gameboard";
 import Player from "./Components/player";
 
-// need to show invalid & valid coords to place ship while hovering over them
-
 class Game {
   _player;
   _playerBoard;
@@ -101,11 +99,13 @@ class Game {
       );
 
     this._playerBoardContainer.classList.remove("inactive");
+    this._botBoardContainer.classList.remove("turn");
     this._botBoardContainer.classList.add("inactive");
     document.querySelector(".random").classList.remove("hide");
 
     document.querySelector(".reset").classList.add("hide");
     document.querySelector(".start").classList.remove("hide");
+    document.querySelector(".rearrange").classList.remove("hide");
   }
 
   deployFleet(board, classname) {
@@ -121,6 +121,7 @@ class Game {
 
     document.querySelector(".start").classList.add("hide");
     document.querySelector(".reset").classList.remove("hide");
+    document.querySelector(".rearrange").classList.add("hide");
 
     this._playerBoardContainer.classList.add("inactive");
     this._botBoardContainer.classList.remove("inactive");
