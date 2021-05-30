@@ -31,20 +31,6 @@ header {
   text-transform: capitalize;
 }
 
-/* need different hovers on missed, hit & untouched cells * - Done/ 
-/* Need Boards to shrinks & grow according to tunrs - Done */
-/* Dark background, game font - Done */
-/* Modals for game over - Done */
-/* Need to display whose turn is it - Done */
-/* Different colors for each board - Done */
-/* Button to reset ships - Done */
-/* How to play modal - Done */
-/* Need animations for ship hits */
-/* Display ship data */
-/* Drag & Drop */
-/* Responsive */
-/* Modal styling */
-
 #title {
   letter-spacing: 0.2rem;
   padding: 0.3rem;
@@ -67,7 +53,7 @@ header {
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
   gap: 0.2rem;
-  width: 450px;
+  min-width: 28rem;
   height: 100%;
   border-radius: 0.5rem;
 }
@@ -206,7 +192,7 @@ header {
 
 .btn {
   padding: 0.5rem;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 500;
   border: none;
   background-color: #5ec576;
@@ -217,6 +203,11 @@ header {
 .btn:hover {
   transform: scale(1.1);
   transition: all 0.3s;
+}
+
+.how {
+  font-size: 1rem;
+  padding: 0.4rem;
 }
 
 .random,
@@ -372,4 +363,121 @@ header {
   border: none;
   cursor: pointer;
   outline: none;
+}
+
+@media only screen and (min-width: 2000px) {
+  .boards {
+    height: 60%;
+  }
+
+  .gameboard {
+    min-width: 55rem;
+  }
+}
+
+@media only screen and (max-width: 2000px) {
+  .boards {
+    height: 50%;
+  }
+
+  .gameboard {
+    min-width: 45rem;
+  }
+}
+
+@media only screen and (max-width: 1600px) {
+  .boards {
+    height: 75%;
+  }
+
+  .gameboard {
+    min-width: 35rem;
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .boards {
+    height: 70%;
+  }
+
+  .gameboard {
+    min-width: 28rem;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .boards {
+    height: 65%;
+  }
+
+  .gameboard {
+    min-width: 25rem;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .boards {
+    height: 65%;
+  }
+
+  .gameboard {
+    min-width: 20rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.3rem;
+  }
+
+  .how {
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .boards {
+    height: 40%;
+  }
+
+  .gameboard {
+    min-width: 14rem;
+    gap: 0.1rem;
+  }
+
+  #current {
+    font-size: 1.2rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.3rem;
+  }
+
+  .how {
+    font-size: 0.7rem;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .boards {
+    height: 35%;
+  }
+
+  .gameboard {
+    min-width: 10rem;
+    gap: 0.1rem;
+  }
+
+  #current {
+    font-size: 1.2rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.3rem;
+  }
+
+  .how {
+    font-size: 0.7rem;
+  }
 }
