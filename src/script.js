@@ -113,7 +113,8 @@ class Game {
     this.displayBoard(board, classname);
     this.displayShips(board, classname);
     // in case we are on the rearrange page
-    this.toggleClasses();
+    if (document.querySelector(".bot__grid").classList.contains("hide"))
+      this.toggleClasses();
   }
 
   start() {
