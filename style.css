@@ -2,6 +2,8 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Exo&family=Spartan&display=swap");
 
+/* Basic */
+
 *,
 *::before,
 *::after {
@@ -26,6 +28,8 @@ body,
   /* background: linear-gradient(360deg, #485461 0%, #28313b 100%); */
 }
 
+/* Header */
+
 header {
   padding: 0.625rem;
   text-transform: capitalize;
@@ -35,6 +39,8 @@ header {
   letter-spacing: 0.2rem;
   padding: 0.3rem;
 }
+
+/* Gameboards */
 
 .boards {
   padding: 10px;
@@ -66,18 +72,6 @@ header {
 .right {
   background: radial-gradient(#1d4a17, #1a570c, #33570d);
   border: 0.6rem solid limegreen;
-}
-
-.middle {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  order: 1;
-}
-
-.middle > * {
-  margin: 0.5rem;
 }
 
 .bot__grid {
@@ -175,6 +169,20 @@ header {
   transition: all 0.3s;
 }
 
+/* Menu & Buttons */
+
+.middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  order: 1;
+}
+
+.middle > * {
+  margin: 0.5rem;
+}
+
 #subText {
   font-size: 1.2rem;
   font-weight: 500;
@@ -216,6 +224,8 @@ header {
 .clear {
   font-size: 1.1rem;
 }
+
+/* Modals */
 
 .modal {
   position: absolute;
@@ -264,6 +274,30 @@ header {
   font-size: 1.1rem;
   padding-top: 0.5rem;
 }
+
+.close__modal {
+  position: absolute;
+  right: 0.4rem;
+  top: -0.4rem;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 5;
+}
+
+/* Rearranging */
 
 .fleet {
   height: 100%;
@@ -339,32 +373,12 @@ header {
   border: 2px solid red !important;
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(3px);
-  z-index: 5;
-}
-
 .hide {
   display: none;
   transition: all 0.3s;
 }
 
-.close__modal {
-  position: absolute;
-  right: 0.4rem;
-  top: -0.4rem;
-  font-size: 2rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  outline: none;
-}
+/* Media Queries */
 
 @media only screen and (min-width: 2000px) {
   .boards {
@@ -376,23 +390,29 @@ header {
   }
 }
 
-@media only screen and (max-width: 2000px) {
-  .boards {
-    height: 50%;
+@media only screen and (min-width: 1400px) {
+  .fleet {
+    min-width: 14rem;
   }
 
-  .gameboard {
-    min-width: 45rem;
-  }
-}
-
-@media only screen and (max-width: 1600px) {
-  .boards {
-    height: 75%;
+  .fleet__ship {
+    height: 3.2rem;
   }
 
-  .gameboard {
-    min-width: 35rem;
+  #ship__1 {
+    flex-basis: 3.18rem;
+  }
+
+  #ship__2 {
+    flex-basis: 6.36rem;
+  }
+
+  #ship__3 {
+    flex-basis: 9.54rem;
+  }
+
+  #ship__4 {
+    flex-basis: 12.72rem;
   }
 }
 
@@ -408,25 +428,57 @@ header {
 
 @media only screen and (max-width: 1024px) {
   .boards {
-    height: 65%;
+    height: 60%;
   }
 
   .gameboard {
     min-width: 25rem;
+    gap: 0rem;
   }
 
   .how__to {
     width: 50%;
   }
+
+  .fleet__ship {
+    height: 2.81rem;
+  }
+
+  #ship__1 {
+    flex-basis: 2.375rem;
+  }
+
+  #ship__2 {
+    flex-basis: 4.75rem;
+  }
+
+  #ship__3 {
+    flex-basis: 7.125rem;
+  }
+
+  #ship__4 {
+    flex-basis: 9.5rem;
+  }
+}
+
+@media only screen and (max-width: 1024px) and (min-height: 1300px) {
+  .boards {
+    height: 35%;
+  }
+
+  .gameboard {
+    min-width: 26rem;
+  }
 }
 
 @media only screen and (max-width: 768px) {
   .boards {
-    height: 65%;
+    height: 60%;
   }
 
   .gameboard {
     min-width: 20rem;
+    border-width: 0.4rem;
   }
 
   .btn {
@@ -457,6 +509,26 @@ header {
 
   #result {
     font-size: 1rem;
+  }
+
+  .fleet__ship {
+    height: 1.9rem;
+  }
+
+  #ship__1 {
+    flex-basis: 2.06rem;
+  }
+
+  #ship__2 {
+    flex-basis: 4.12rem;
+  }
+
+  #ship__3 {
+    flex-basis: 6.18rem;
+  }
+
+  #ship__4 {
+    flex-basis: 8.24rem;
   }
 }
 
@@ -531,6 +603,24 @@ header {
   .game__over {
     width: 40%;
   }
+
+  .rearrange {
+    display: none;
+  }
+
+  .miss,
+  .border {
+    font-size: 0.2rem;
+  }
+
+  .turn {
+    transform: scale(0.95);
+  }
+
+  .turn,
+  .inactive {
+    transition: transform 0.7s;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -549,5 +639,25 @@ header {
 
   .game__over {
     width: 60%;
+  }
+}
+
+@media only screen and (max-width: 768px) and (min-height: 670px) {
+  .boards {
+    height: 35%;
+  }
+
+  .gameboard {
+    min-width: 20rem;
+  }
+}
+
+@media only screen and (max-width: 600px) and (min-height: 670px) {
+  .boards {
+    height: 70%;
+  }
+
+  .gameboard {
+    min-width: 15rem;
   }
 }
