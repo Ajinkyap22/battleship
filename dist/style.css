@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
-
 @import url("https://fonts.googleapis.com/css2?family=Exo&family=Spartan&display=swap");
 
 /* Basic */
@@ -12,7 +10,6 @@
   box-sizing: border-box;
   max-width: 100%;
   position: relative;
-  font-family: "Poppins", sans-serif;
   font-family: "Exo", sans-serif;
 }
 
@@ -23,9 +20,7 @@ body,
   position: relative;
   text-align: center;
   color: white;
-  background-color: #202020;
   background: linear-gradient(#0d324d, #7f5a83);
-  /* background: linear-gradient(360deg, #485461 0%, #28313b 100%); */
 }
 
 /* Header */

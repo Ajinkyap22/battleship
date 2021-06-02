@@ -1,4 +1,4 @@
-import Ship from "../Components/ship";
+import Ship from "../Factories/ship";
 
 class Gameboard {
   constructor(size = 100) {
@@ -114,7 +114,7 @@ class Gameboard {
       return false;
     }
 
-    if (axis == "x") {
+    if (axis === "x") {
       if (coords + (ship.length - 1) > this.board.length) {
         return false;
       }

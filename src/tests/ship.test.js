@@ -1,4 +1,4 @@
-import Ship from "../Components/ship";
+import Ship from "../Components/Factories/ship";
 
 test("Ship Hit", () => {
   const newShip = new Ship(3);

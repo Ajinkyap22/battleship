@@ -1,5 +1,5 @@
-import Gameboard from "../Components/gameboard";
-import Ship from "../Components/ship";
+import Gameboard from "../Components/Factories/gameboard";
+import Ship from "../Components/Factories/ship";
 
 test("is gameboard initializing", () => {
   const board = new Gameboard();

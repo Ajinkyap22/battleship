@@ -1,6 +1,6 @@
-import Player from "../Components/player";
-import Gameboard from "../Components/gameboard";
-import Ship from "../Components/ship";
+import Player from "../Components/Factories/player";
+import Gameboard from "../Components/Factories/gameboard";
+import Ship from "../Components/Factories/ship";
 
 test("generates legal bot move", () => {
   const playerBoard = new Gameboard();

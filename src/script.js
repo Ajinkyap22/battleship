@@ -1,5 +1,7 @@
-import Gameboard from "./Components/gameboard";
-import Player from "./Components/player";
+import Gameboard from "./Components/Factories/gameboard";
+import Player from "./Components/Factories/player";
+import * as helper from "./Components/Game/helper";
+import dragDrop from "./Components/Game/dragNdrop";
 
 class Game {
   _player;
@@ -8,17 +10,19 @@ class Game {
   _botBoard;
   _gameOver;
   _botBoardContainer;
-  _draggables;
-  _axis;
 
   constructor() {
     this._botBoardContainer = document.querySelector(".right");
     this._playerBoardContainer = document.querySelector(".left");
 
-    this._axis = "x";
+    dragDrop.axis = "x";
 
     this.init();
 
+    this.addHandlers();
+  }
+
+  addHandlers() {
     // Start game
     document
       .querySelector(".start")
@@ -32,12 +36,12 @@ class Game {
     // Play again
     document
       .querySelector(".replay")
-      .addEventListener("click", this.playAgain.bind(this));
+      .addEventListener("click", helper.playAgain);
 
     // Close modal
     document
       .querySelectorAll(".close__modal")
-      .forEach((cross) => cross.addEventListener("click", this.closeModal));
+      .forEach((cross) => cross.addEventListener("click", helper.closeModal));
 
     // randomise
     document
@@ -50,28 +54,30 @@ class Game {
     // open how to play modal
     document
       .querySelector(".how")
-      .addEventListener("click", this.showModal.bind(this, "how__to"));
+      .addEventListener("click", helper.showModal.bind(this, "how__to"));
 
     // close how to play modal
     document
       .querySelector(".got__it")
-      .addEventListener("click", this.closeModal);
+      .addEventListener("click", helper.closeModal);
 
     // clear player board
     document
       .querySelector(".clear")
-      .addEventListener("click", this.displayFleet.bind(this));
+      .addEventListener("click", dragDrop.displayFleet.bind(this));
 
     // rearrange ships
     document
       .querySelector(".rearrange")
-      .addEventListener("click", this.rearrange.bind(this));
+      .addEventListener("click", dragDrop.rearrange.bind(dragDrop));
 
     // change axis
     document
       .querySelector(".axis")
-      .addEventListener("click", this.toggleAxis.bind(this));
+      .addEventListener("click", dragDrop.toggleAxis.bind(dragDrop));
   }
+
+  // Initialization methods
 
   init() {
     this.turn = 1;
@@ -114,7 +120,7 @@ class Game {
     this.displayShips(board, classname);
     // in case we are on the rearrange page
     if (document.querySelector(".bot__grid").classList.contains("hide"))
-      this.toggleClasses();
+      helper.toggleClasses();
   }
 
   start() {
@@ -187,6 +193,8 @@ class Game {
       }
     }
   }
+
+  // Game logic methods
 
   switchTurn(current) {
     if (this._gameOver) return;
@@ -313,201 +321,11 @@ class Game {
       .forEach((board) => board.classList.add("inactive"));
 
     // alert gameover
-    this.showModal("game__over");
+    helper.showModal("game__over");
 
     document.querySelector("#result").textContent = `${player.type} Wins!`;
-  }
-
-  playAgain() {
-    this.closeModal();
-    this.init();
-  }
-
-  showModal(classname) {
-    document.querySelector(`.${classname}`).classList.remove("hide");
-    document.querySelector(".overlay").classList.remove("hide");
-  }
-
-  closeModal() {
-    document
-      .querySelectorAll(".modal")
-      .forEach((modal) => modal.classList.add("hide"));
-    document.querySelector(".overlay").classList.add("hide");
-  }
-
-  toggleClasses() {
-    // Fleet
-    document.querySelector(".fleet").classList.toggle("hide");
-    // bot board
-    document.querySelector(".bot__grid").classList.toggle("hide");
-    // start button
-    document.querySelector(".start").classList.toggle("hide");
-    // how to play button
-    document.querySelector(".how").classList.toggle("hide");
-    // rearrange button
-    document.querySelector(".rearrange").classList.toggle("hide");
-    // clear button
-    document.querySelector(".clear").classList.toggle("hide");
-    // axis button
-    document.querySelector(".axis").classList.toggle("hide");
-    // note
-    document.querySelector("#note").classList.toggle("hide");
-  }
-
-  rearrange(e) {
-    this.toggleClasses();
-    // display the ships to place
-    this.displayFleet();
-    // change text
-    document.querySelector("#current").textContent = "Drag & Drop";
-    // show axis button
-    document.querySelector(".axis").classList.remove("hide");
-  }
-
-  displayFleet() {
-    const fleet = document.querySelector(".fleet");
-    this._axis = "x";
-
-    this._playerBoard.init();
-    this._playerBoard.createShips();
-    fleet.innerHTML = "";
-
-    fleet.classList.remove("vertical");
-    fleet.classList.add("horrizontal");
-
-    document.querySelector(".axis").textContent = "Axis : X";
-
-    this.displayBoard(this._playerBoard, "left");
-
-    this._playerBoard.ships.forEach((ship, i) => {
-      const shipDiv = document.createElement("div");
-
-      shipDiv.setAttribute("class", "fleet__ship x__axis");
-      shipDiv.setAttribute("id", `ship__${ship.length}`);
-      shipDiv.setAttribute("draggable", true);
-      shipDiv.setAttribute("data-index", i);
-
-      this.appendShip(ship, shipDiv);
-
-      fleet.appendChild(shipDiv);
-    });
-
-    this._draggables = document.querySelectorAll(".fleet__ship");
-
-    this.dragStart();
-    this.dragEnd();
-
-    document.querySelectorAll("#leftCell").forEach((cell) => {
-      cell.addEventListener("dragover", (e) => e.preventDefault());
-
-      cell.addEventListener("dragenter", (e) => {
-        const dragging = document.querySelector(".dragging");
-        const ship = this._playerBoard.ships[dragging.dataset.index];
-
-        if (this._playerBoard.validateCoords(ship, +e.target.dataset.index))
-          e.target.classList.add("valid");
-        else e.target.classList.add("invalid");
-      });
-
-      cell.addEventListener("dragleave", (e) => {
-        e.target.classList.remove("valid");
-        e.target.classList.remove("invalid");
-      });
-
-      cell.addEventListener("drop", this.dropShip.bind(this));
-    });
-  }
-
-  appendShip(ship, parent) {
-    for (let i = 0; i < ship.length; i++) {
-      const cell = document.createElement("div");
-
-      cell.setAttribute("class", "fleet__cell");
-
-      parent.appendChild(cell);
-    }
-  }
-
-  dragStart() {
-    this._draggables.forEach((draggable) => {
-      draggable.addEventListener("dragstart", (e) => {
-        draggable.classList.add("dragging");
-      });
-    });
-  }
-
-  dragEnd() {
-    this._draggables.forEach((draggable) => {
-      draggable.addEventListener("dragend", () => {
-        draggable.classList.remove("dragging");
-      });
-    });
-  }
-
-  dropShip(e) {
-    e.preventDefault();
-    // get the index of the cell
-    const coords = +e.target.dataset.index;
-    // get the dragged ship from dom
-    const draggable = document.querySelector(".dragging");
-    // get the ship from the board
-    const ship = this._playerBoard.ships[draggable.dataset.index];
-    // get all the cells
-    const cells = document.querySelectorAll("#leftCell");
-
-    // check if its a valid coord & place the ship on board
-    if (!this._playerBoard.validateCoords(ship, coords) || !draggable.draggable)
-      return;
-
-    this._playerBoard.placeShip(ship, coords, this._axis);
-
-    if (this._axis === "x") {
-      for (let i = 0; i < ship.length; i++) {
-        this.renderShip(coords + i, cells, this._playerBoard);
-      }
-    } else {
-      for (let i = 0; i < ship.length; i++) {
-        this.renderShip(coords + i * 10, cells, this._playerBoard);
-      }
-    }
-
-    // Remove the dragged ship from the fleet
-    draggable.childNodes.forEach((node) => node.classList.add("placed"));
-    draggable.classList.add("placed");
-    // check if all ships are placed
-    this._playerBoard.areAllPlaced();
-    if (this._playerBoard.allPlaced) this.toggleClasses();
-    // remove the ships draggable property
-    draggable.setAttribute("draggable", false);
-  }
-
-  toggleAxis(e) {
-    if (this._axis === "x") {
-      // change axis
-      this._axis = "y";
-      // change text
-      e.target.textContent = "Axis : Y";
-      // chnage classes for fleet
-      document.querySelector(".fleet").classList.remove("horrizontal");
-      document.querySelector(".fleet").classList.add("vertical");
-      // change classes for ships
-      document.querySelectorAll(".fleet__ship").forEach((ship) => {
-        ship.classList.remove("x__axis");
-        ship.classList.add("y__axis");
-      });
-    } else {
-      this._axis = "x";
-      e.target.textContent = "Axis : X";
-
-      document.querySelector(".fleet").classList.remove("vertical");
-      document.querySelector(".fleet").classList.add("horrizontal");
-
-      document.querySelectorAll(".fleet__ship").forEach((ship) => {
-        ship.classList.remove("y__axis");
-        ship.classList.add("x__axis");
-      });
-    }
   }
 }
 
 const game = new Game();
+export default game;
