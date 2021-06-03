@@ -374,6 +374,25 @@ header {
   transition: all 0.3s;
 }
 
+/* Footer */
+
+footer {
+  font-size: 0.8rem;
+  padding: 0.3rem;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  background: #202020;
+  color: white;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: orangered;
+}
+
 /* Media Queries */
 
 @media only screen and (min-width: 2000px) {
@@ -635,6 +654,10 @@ header {
 
   .game__over {
     width: 60%;
+  }
+
+  footer {
+    font-size: 0.5rem;
   }
 }
 
