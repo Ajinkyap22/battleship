@@ -65,7 +65,7 @@ class Game {
     // clear player board
     document
       .querySelector(".clear")
-      .addEventListener("click", dragDrop.displayFleet.bind(this));
+      .addEventListener("click", dragDrop.displayFleet.bind(dragDrop));
 
     // rearrange ships
     document
