@@ -1,6 +1,6 @@
 ﻿# Battleship
 
-> A TDD web-application of the famous strategy guessing game [Battleship](https://en.wikipedia.org/wiki/Battleship_(game))!
+> A TDD web-application of the famous strategy guessing game [Battleship](https://en.wikipedia.org/wiki/Battleship_(game))
 
 ## Table of contents
 
@@ -33,9 +33,9 @@
 
 ## Features
 
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+- Play against a smart AI
+- Place ships on fleet yourself
+- Can randomise ship positions
 
 ## Status
 
